@@ -33,17 +33,15 @@ class StudentController {
         summary = "Sign up a student.",
         description = "This feature lets a person be able to register to the university app."
     )
-    @PostMapping("/save")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Student registered correctly!"),
-            ApiResponse(
-                responseCode = "409", description = "User is already registered!",
-                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))]
-            )
+            ApiResponse(responseCode = "409", description = "User is already registered!",
+                        content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )
     @Transactional
+    @PostMapping("/save")
     fun registerStudent(@RequestBody request: StudentRequest): ResponseEntity<StudentResponse> =
         ResponseEntity.status(HttpStatus.CREATED).body(studentService.save(request))
 }
