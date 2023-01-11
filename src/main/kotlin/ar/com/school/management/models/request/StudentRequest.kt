@@ -10,11 +10,7 @@ data class StudentRequest(
     @NotNull(message = "The social security number can't be null")
     @NotEmpty(message = "the social security number can't be empty")
     @NotBlank(message = "the social security number can't be blank")
-    @Schema(
-        title = "The user's social security number",
-        example = "34584320",
-        requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(title = "The user's social security number", example = "34584320", requiredMode = Schema.RequiredMode.REQUIRED)
     val socialSecurityNumber: Int,
 
     @NotNull(message = "The name can't be null")
