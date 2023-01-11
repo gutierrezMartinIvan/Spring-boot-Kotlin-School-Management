@@ -32,7 +32,7 @@ class StudentServiceImpl: StudentService {
         var entitySave: StudentEntity = mapper.studentDto2Entity(request)
         entitySave.password = passwordEncoder.encode(entitySave.password)
         var response = repository.save(entitySave)
-        
+
         return mapper.studentEntity2Dto(response)
     }
 }
