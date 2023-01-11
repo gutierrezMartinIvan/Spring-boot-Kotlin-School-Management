@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController
     description = "Here all the users can interact with the features provided to an student"
 )
 class StudentController {
-
     @Autowired
     private lateinit var studentService: StudentService
 
