@@ -10,8 +10,10 @@ class CareerEntity(
     @Column(name = "career_id")
     var id: Long? = null,
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     var name: String,
+
+    var description: String?,
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -30,5 +32,5 @@ class CareerEntity(
         joinColumns = [JoinColumn(name = "career_id")],
         inverseJoinColumns = [JoinColumn(name = "teacher_id")]
     )
-    var teachers: List<TeacherEntity> = mutableListOf(),
+    var teachers: List<TeacherEntity>? = mutableListOf(),
 )
