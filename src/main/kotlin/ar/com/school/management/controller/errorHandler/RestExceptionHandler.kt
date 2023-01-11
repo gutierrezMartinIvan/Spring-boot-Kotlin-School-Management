@@ -1,5 +1,6 @@
 package ar.com.school.management.controller.errorHandler
 
+import ar.com.school.management.exception.CareerRegisteredException
 import ar.com.school.management.exception.UserRegisteredException
 import ar.com.school.management.models.response.ApiErrorResponse
 import org.springframework.http.HttpHeaders
@@ -21,6 +22,16 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
             HttpStatus.CONFLICT,
             ex.message,
             listOf("User Already Exists!")
+        )
+        return handleExceptionInternal(ex, error, HttpHeaders(), HttpStatus.CONFLICT, request)
+    }
+
+    @ExceptionHandler(value = [CareerRegisteredException::class])
+    fun handleCareerAlreadyRegistered(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
+        val error = ApiErrorResponse(
+            HttpStatus.CONFLICT,
+            ex.message,
+            listOf("Career Already Exists!")
         )
         return handleExceptionInternal(ex, error, HttpHeaders(), HttpStatus.CONFLICT, request)
     }
