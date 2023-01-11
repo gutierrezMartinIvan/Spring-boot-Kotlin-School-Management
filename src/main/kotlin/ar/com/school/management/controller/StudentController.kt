@@ -1,11 +1,15 @@
 package ar.com.school.management.controller
 
 import ar.com.school.management.models.request.StudentRequest
+import ar.com.school.management.models.response.ApiErrorResponse
 import ar.com.school.management.models.response.StudentResponse
 import ar.com.school.management.service.StudentService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -27,7 +31,12 @@ class StudentController {
     @Operation(summary = "Sign up a student.",
         description = "This feature lets a person be able to register to the university app.")
     @PostMapping("/save")
-    @ApiResponse(responseCode = "201", description = "Student registered correctly!")
+    @ApiResponses(value = [
+                    ApiResponse(responseCode = "201", description = "Student registered correctly!"),
+                    ApiResponse(responseCode = "409", description = "User is already registered!",
+                        content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+                    ])
+    @Transactional
     fun registerStudent(@RequestBody request: StudentRequest): ResponseEntity<StudentResponse>
         = ResponseEntity.status(HttpStatus.CREATED).body(studentService.save(request))
 }
