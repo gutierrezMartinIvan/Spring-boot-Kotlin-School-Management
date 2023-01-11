@@ -27,7 +27,9 @@ data class StudentRequest(
     @Schema(title = "The user's phone number", example = "1212574574", requiredMode = Schema.RequiredMode.REQUIRED)
     val phone: Int?,
 
-    @field:NotNull(message = "The surname can't be null")
+    @field:NotNull(message = "The email can't be null")
+    @field:NotEmpty(message = "the email can't be empty")
+    @field:NotBlank(message = "the email can't be blank")
     @field:Email(message = "Invalid email format")
     @field:Schema(title = "The user's email", example = "example@gmail.com", requiredMode = Schema.RequiredMode.REQUIRED)
     val email: String?,
