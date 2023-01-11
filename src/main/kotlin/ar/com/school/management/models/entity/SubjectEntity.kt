@@ -16,10 +16,10 @@ class SubjectEntity(@Id
                     var state: State,
                     var mark: Marks,
 
-                    @ManyToMany(mappedBy = "subjects")
+                    @ManyToMany(mappedBy = "subjects", fetch = FetchType.LAZY)
                     var careers: List<CareerEntity>? = mutableListOf(),
 
-                    @ManyToMany
+                    @ManyToMany(fetch = FetchType.LAZY)
                     @JoinTable(
                         name = "subject_student",
                         joinColumns = [JoinColumn(name = "subject_id")],
@@ -27,7 +27,7 @@ class SubjectEntity(@Id
                     )
                     var students: List<StudentEntity>? = mutableListOf(),
 
-                    @ManyToMany(mappedBy = "subjects")
+                    @ManyToMany(mappedBy = "subjects", fetch = FetchType.LAZY)
                     var teachers: List<TeacherEntity>? = mutableListOf()
 
 

@@ -16,10 +16,10 @@ class TeacherEntity(@Id
                     var phone: Int,
                     var email: String,
 
-                    @ManyToMany(mappedBy = "teachers")
+                    @ManyToMany(mappedBy = "teachers", fetch = FetchType.LAZY)
                     var careers: List<CareerEntity>? = mutableListOf(),
 
-                    @ManyToMany
+                    @ManyToMany(fetch = FetchType.LAZY)
                     @JoinTable(
                         name = "teacher_subject",
                         joinColumns = [JoinColumn(name = "teacher_id")],

@@ -12,17 +12,17 @@ class CareerEntity(@Id
                    @Column(nullable = false)
                    var name: String,
 
-                   @ManyToMany
+                   @ManyToMany(fetch = FetchType.LAZY)
                    @JoinTable(
                        name = "career_subject",
                        joinColumns = [JoinColumn(name = "career_id")],
                        inverseJoinColumns = [JoinColumn(name = "subject_id")])
                    var subjects: List<SubjectEntity>?,
 
-                   @OneToMany(mappedBy = "careerId", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+                   @OneToMany(mappedBy = "careerId", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
                    var students: List<StudentEntity>? = mutableListOf(),
 
-                   @ManyToMany
+                   @ManyToMany(fetch = FetchType.LAZY)
                    @JoinTable(
                        name = "career_teacher",
                        joinColumns = [JoinColumn(name = "career_id")],
