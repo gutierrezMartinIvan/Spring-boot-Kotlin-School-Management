@@ -1,7 +1,7 @@
 package ar.com.school.management.models.response
 
-import ar.com.school.management.models.entity.CareerEntity
 import ar.com.school.management.models.entity.SubjectEntity
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 data class StudentResponse(
     var id: Long?,
@@ -10,9 +10,10 @@ data class StudentResponse(
     var surname: String?,
     var phone: Int?,
     var email: String?,
-    var password: String?,
-    var careerId: CareerEntity?,
+    @JsonIgnore
+    var careerId: CareerResponse?,
+    @JsonIgnore
     var subjects: List<SubjectEntity>?,
 ) {
-    constructor() : this(null, null, null, null, null, null, null, null, null)
+    constructor() : this(null, null, null, null, null, null, null, null)
 }

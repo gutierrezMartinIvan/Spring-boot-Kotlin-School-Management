@@ -5,4 +5,5 @@ import ar.com.school.management.models.response.StudentResponse
 
 interface StudentService {
     fun save(request: StudentRequest): StudentResponse
+    fun getStudentBySocialSecurityNumber(ssNumber: Int): StudentResponse
 }

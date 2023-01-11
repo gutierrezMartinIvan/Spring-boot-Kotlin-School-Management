@@ -14,6 +14,8 @@ import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -44,4 +46,19 @@ class StudentController {
     @PostMapping("/save")
     fun registerStudent(@Valid @RequestBody request: StudentRequest): ResponseEntity<StudentResponse> =
         ResponseEntity.status(HttpStatus.CREATED).body(studentService.save(request))
+
+    @Operation(
+        summary = "Get a student by its Social Security Number.",
+        description = "This feature lets all users to get the information from a student by its Social Security Number."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Student found successfully!"),
+            ApiResponse(responseCode = "404", description = "The ID does not belong to any student!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @GetMapping("/get/{ssNumber}")
+    fun getStudentBySocialSecurityNumber(@PathVariable ssNumber: Int) = studentService.getStudentBySocialSecurityNumber(ssNumber)
+
 }

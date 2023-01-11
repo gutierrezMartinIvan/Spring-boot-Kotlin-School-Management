@@ -1,5 +1,6 @@
 package ar.com.school.management.service.impl
 
+import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.exception.UserRegisteredException
 import ar.com.school.management.models.entity.StudentEntity
 import ar.com.school.management.models.request.StudentRequest
@@ -28,10 +29,16 @@ class StudentServiceImpl : StudentService {
         if (entity?.isPresent == true)
             throw UserRegisteredException("The user is already registered")
 
-        var entitySave: StudentEntity = mapper.studentDto2Entity(request)
+        var entitySave = mapper.studentDto2Entity(request)
         entitySave.password = passwordEncoder.encode(entitySave.password)
         var response = repository.save(entitySave)
 
         return mapper.studentEntity2Dto(response)
+    }
+
+    override fun getStudentBySocialSecurityNumber(ssNumber: Int): StudentResponse {
+        return mapper.studentEntity2Dto(repository.findBySocialSecurityNumber(ssNumber).orElseThrow{
+            NotFoundException("The ssNumber: $ssNumber does not belong to any student registered")
+        })
     }
 }
