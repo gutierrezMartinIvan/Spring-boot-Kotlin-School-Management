@@ -6,15 +6,12 @@ import ar.com.school.management.models.response.StudentResponse
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import org.springframework.web.bind.annotation.Mapping
 
 @Component
 class Mapper {
 
     @Autowired
     private lateinit var modelMapper: ModelMapper
-
-
 
     fun studentEntity2Dto(entity: StudentEntity): StudentResponse = modelMapper.map(entity, StudentResponse::class.java)
 

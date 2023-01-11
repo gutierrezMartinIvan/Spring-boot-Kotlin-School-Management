@@ -4,29 +4,31 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "careers")
-class CareerEntity(@Id
-                   @GeneratedValue(strategy = GenerationType.IDENTITY)
-                   @Column(name = "career_id")
-                   var id: Long? = null,
+class CareerEntity(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "career_id")
+    var id: Long? = null,
 
-                   @Column(nullable = false)
-                   var name: String,
+    @Column(nullable = false)
+    var name: String,
 
-                   @ManyToMany(fetch = FetchType.LAZY)
-                   @JoinTable(
-                       name = "career_subject",
-                       joinColumns = [JoinColumn(name = "career_id")],
-                       inverseJoinColumns = [JoinColumn(name = "subject_id")])
-                   var subjects: List<SubjectEntity>?,
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "career_subject",
+        joinColumns = [JoinColumn(name = "career_id")],
+        inverseJoinColumns = [JoinColumn(name = "subject_id")]
+    )
+    var subjects: List<SubjectEntity>?,
 
-                   @OneToMany(mappedBy = "careerId", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-                   var students: List<StudentEntity>? = mutableListOf(),
+    @OneToMany(mappedBy = "careerId", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    var students: List<StudentEntity>? = mutableListOf(),
 
-                   @ManyToMany(fetch = FetchType.LAZY)
-                   @JoinTable(
-                       name = "career_teacher",
-                       joinColumns = [JoinColumn(name = "career_id")],
-                       inverseJoinColumns = [JoinColumn(name = "teacher_id")]
-                   )
-                   var teachers: List<TeacherEntity> = mutableListOf(),
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "career_teacher",
+        joinColumns = [JoinColumn(name = "career_id")],
+        inverseJoinColumns = [JoinColumn(name = "teacher_id")]
+    )
+    var teachers: List<TeacherEntity> = mutableListOf(),
 )

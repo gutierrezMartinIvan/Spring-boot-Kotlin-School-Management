@@ -4,6 +4,6 @@ import ar.com.school.management.models.entity.StudentEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
-interface StudentRepository: JpaRepository<StudentEntity, Long> {
+interface StudentRepository : JpaRepository<StudentEntity, Long> {
     fun findBySocialSecurityNumber(socialSecurityNumber: Int): Optional<StudentEntity>
 }

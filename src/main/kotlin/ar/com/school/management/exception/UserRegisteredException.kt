@@ -1,3 +1,3 @@
 package ar.com.school.management.exception
 
-class UserRegisteredException(msg: String): RuntimeException(msg) {}
+class UserRegisteredException(msg: String) : RuntimeException(msg) {}
