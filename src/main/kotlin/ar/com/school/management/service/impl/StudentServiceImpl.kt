@@ -24,8 +24,9 @@ class StudentServiceImpl : StudentService {
     private lateinit var passwordEncoder: BCryptPasswordEncoder
 
     override fun save(request: StudentRequest): StudentResponse {
-        var entity: StudentEntity? = repository.findBySocialSecurityNumber(request.socialSecurityNumber)
-            .orElseThrow { UserRegisteredException("The user is already registered") }
+        var entity = request.socialSecurityNumber?.let { repository.findBySocialSecurityNumber(it) }
+        if (entity?.isPresent == true)
+            throw UserRegisteredException("The user is already registered")
 
         var entitySave: StudentEntity = mapper.studentDto2Entity(request)
         entitySave.password = passwordEncoder.encode(entitySave.password)
