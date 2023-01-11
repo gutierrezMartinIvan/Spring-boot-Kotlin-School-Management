@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.transaction.Transactional
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -31,7 +32,7 @@ class StudentController {
 
     @Operation(
         summary = "Sign up a student.",
-        description = "This feature lets a person be able to register to the university app."
+        description = "This feature lets a person be able to register at the university app."
     )
     @ApiResponses(
         value = [
@@ -42,6 +43,6 @@ class StudentController {
     )
     @Transactional
     @PostMapping("/save")
-    fun registerStudent(@RequestBody request: StudentRequest): ResponseEntity<StudentResponse> =
+    fun registerStudent(@Valid @RequestBody request: StudentRequest): ResponseEntity<StudentResponse> =
         ResponseEntity.status(HttpStatus.CREATED).body(studentService.save(request))
 }
