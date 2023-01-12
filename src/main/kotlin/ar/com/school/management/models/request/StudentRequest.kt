@@ -8,35 +8,35 @@ import jakarta.validation.constraints.NotNull
 
 data class StudentRequest(
     @field:NotNull(message = "The social security number can't be null")
-    @Schema(title = "The user's social security number", example = "34584320", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(title = "The student's social security number", example = "34584320", requiredMode = Schema.RequiredMode.REQUIRED)
     val socialSecurityNumber: Int?,
 
     @field:NotNull(message = "The name can't be null")
     @field:NotEmpty(message = "the name can't be empty")
     @field:NotBlank(message = "the name can't be blank")
-    @Schema(title = "The user's name", example = "James")
+    @Schema(title = "The student's name", example = "James")
     val name: String?,
 
     @field:NotNull(message = "The surname can't be null")
     @field:NotEmpty(message = "the surname can't be empty")
     @field:NotBlank(message = "the surname can't be blank")
-    @Schema(title = "The user's surname", example = "Alvarez", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(title = "The student's surname", example = "Alvarez", requiredMode = Schema.RequiredMode.REQUIRED)
     val surname: String?,
 
     @field:NotNull(message = "The surname can't be null")
-    @Schema(title = "The user's phone number", example = "1212574574", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(title = "The student's phone number", example = "1212574574", requiredMode = Schema.RequiredMode.REQUIRED)
     val phone: Int?,
 
     @field:NotNull(message = "The email can't be null")
     @field:NotEmpty(message = "the email can't be empty")
     @field:NotBlank(message = "the email can't be blank")
     @field:Email(message = "Invalid email format")
-    @field:Schema(title = "The user's email", example = "example@gmail.com", requiredMode = Schema.RequiredMode.REQUIRED)
+    @field:Schema(title = "The student's email", example = "example@gmail.com", requiredMode = Schema.RequiredMode.REQUIRED)
     val email: String?,
 
     @field:NotNull(message = "The password can't be null")
     @field:NotEmpty(message = "the password can't be empty")
     @field:NotBlank(message = "the password can't be blank")
-    @Schema(title = "The user's password", example = "paSSwo3Rd", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(title = "The student's password", example = "paSSwo3Rd", requiredMode = Schema.RequiredMode.REQUIRED)
     val password: String?
 )

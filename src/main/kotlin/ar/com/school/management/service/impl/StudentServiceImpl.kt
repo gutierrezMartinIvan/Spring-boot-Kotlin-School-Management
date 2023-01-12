@@ -27,7 +27,7 @@ class StudentServiceImpl : StudentService {
     override fun save(request: StudentRequest): StudentResponse {
         var entity = request.socialSecurityNumber?.let { repository.findBySocialSecurityNumber(it) }
         if (entity?.isPresent == true)
-            throw UserRegisteredException("The user is already registered")
+            throw UserRegisteredException("The student is already registered")
 
         var entitySave = mapper.studentDto2Entity(request)
         entitySave.password = passwordEncoder.encode(entitySave.password)

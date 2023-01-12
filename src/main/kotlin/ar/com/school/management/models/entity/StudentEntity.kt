@@ -30,6 +30,8 @@ class StudentEntity(
     @Column(unique = true, nullable = false)
     @Email
     var email: String,
+
+    @Column(nullable = false)
     var password: String,
 
     @ManyToOne(fetch = FetchType.LAZY)

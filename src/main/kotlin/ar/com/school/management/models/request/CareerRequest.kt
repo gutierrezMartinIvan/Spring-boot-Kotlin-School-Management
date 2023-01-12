@@ -12,8 +12,9 @@ data class CareerRequest(
     @field:NotNull(message = "The name can't be null")
     @field:NotEmpty(message = "the name can't be empty")
     @field:NotBlank(message = "the name can't be blank")
-    @Schema(title = "The career's name", example = "Bachelor of Science in Computer and Information Systems")
+    @field:Schema(title = "The career's name", example = "Bachelor of Science in Computer and Information Systems")
     val name: String?,
-    @Schema(title = "Career description", example = "The Bachelor of Science in computer is for students who like technology")
+
+    @field:Schema(title = "Career description", example = "The Bachelor of Science in computer is for students who like technology")
     val description: String?)
 
