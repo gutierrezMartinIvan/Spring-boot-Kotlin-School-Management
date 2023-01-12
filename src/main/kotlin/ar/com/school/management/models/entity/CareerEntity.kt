@@ -23,7 +23,7 @@ class CareerEntity(
     )
     var subjects: MutableList<SubjectEntity>?,
 
-    @OneToMany(mappedBy = "careerId", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "career", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var students: MutableList<StudentEntity>?,
 
     @ManyToMany
@@ -32,5 +32,5 @@ class CareerEntity(
         joinColumns = [JoinColumn(name = "career_id")],
         inverseJoinColumns = [JoinColumn(name = "teacher_id")]
     )
-    var teachers: MutableList<TeacherEntity>? = mutableListOf(),
+    var teachers: MutableList<TeacherEntity>?,
 )
