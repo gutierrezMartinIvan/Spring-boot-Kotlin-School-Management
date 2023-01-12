@@ -56,6 +56,5 @@ class TeacherController {
         ]
     )
     @GetMapping("/get/{ssNumber}")
-    @JsonView(UserViewConfig.Internal::class)
     fun getTeacherBySocialSecurityNumber(@Valid @PathVariable ssNumber: Int) = teacherService.getTeacherBySocialSecurityNumber(ssNumber)
 }
