@@ -7,4 +7,6 @@ import ar.com.school.management.models.response.StudentResponse
 interface CareerService {
     fun save(request: CareerRequest): CareerResponse
     fun signUpStudent2Career(careerId: Long, studentSsN: Int): StudentResponse
+    fun addTeacher2Career(careerId: Long, teacherSsn: Int): CareerResponse
+    fun getCareerById(id: Long): CareerResponse
 }
