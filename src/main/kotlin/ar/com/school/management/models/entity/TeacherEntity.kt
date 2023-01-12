@@ -43,7 +43,7 @@ class TeacherEntity(
         joinColumns = [JoinColumn(name = "teacher_id")],
         inverseJoinColumns = [JoinColumn(name = "subject_id")]
     )
-    var subjects: MutableList<SubjectEntity>? = mutableListOf(),
+    var subjects: MutableList<SubjectEntity>?,
 
     var deleted: Boolean = false
 )
