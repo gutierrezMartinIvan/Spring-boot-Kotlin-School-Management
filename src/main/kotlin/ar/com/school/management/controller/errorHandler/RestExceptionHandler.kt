@@ -22,7 +22,7 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         val error = ApiErrorResponse(
             HttpStatus.CONFLICT,
             ex.message,
-            listOf("User Already Exists!")
+            listOf("User Already Registered!")
         )
         return handleExceptionInternal(ex, error, HttpHeaders(), HttpStatus.CONFLICT, request)
     }
