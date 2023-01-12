@@ -34,9 +34,9 @@ class StudentEntity(
     @Column(nullable = false)
     var password: String,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "career_id")
-    var careerId: CareerEntity?,
+    @ManyToOne
+    @JoinColumn(name = "career")
+    var career: CareerEntity?,
 
     @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
     var subjects: MutableList<SubjectEntity>?,
