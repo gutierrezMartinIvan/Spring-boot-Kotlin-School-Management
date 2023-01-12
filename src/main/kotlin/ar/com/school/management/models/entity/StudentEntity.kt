@@ -37,7 +37,7 @@ class StudentEntity(
     var careerId: CareerEntity?,
 
     @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
-    var subjects: List<SubjectEntity>?,
+    var subjects: MutableList<SubjectEntity>?,
 
     var deleted: Boolean = false
 )
