@@ -38,7 +38,7 @@ class StudentController {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Student registered correctly!"),
-            ApiResponse(responseCode = "409", description = "User is already registered!",
+            ApiResponse(responseCode = "409", description = "Student is already registered!",
                         content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )
