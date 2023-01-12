@@ -18,7 +18,7 @@ class TeacherEntity(
     var email: String,
 
     @ManyToMany(mappedBy = "teachers", fetch = FetchType.LAZY)
-    var careers: List<CareerEntity>? = mutableListOf(),
+    var careers: MutableList<CareerEntity>? = mutableListOf(),
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -26,5 +26,5 @@ class TeacherEntity(
         joinColumns = [JoinColumn(name = "teacher_id")],
         inverseJoinColumns = [JoinColumn(name = "subject_id")]
     )
-    var subjects: List<SubjectEntity>? = mutableListOf()
+    var subjects: MutableList<SubjectEntity>? = mutableListOf()
 )

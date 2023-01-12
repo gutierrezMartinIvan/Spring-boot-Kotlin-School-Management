@@ -15,22 +15,22 @@ class CareerEntity(
 
     var description: String?,
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "career_subject",
         joinColumns = [JoinColumn(name = "career_id")],
         inverseJoinColumns = [JoinColumn(name = "subject_id")]
     )
-    var subjects: List<SubjectEntity>?,
+    var subjects: MutableList<SubjectEntity>?,
 
     @OneToMany(mappedBy = "careerId", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var students: List<StudentEntity>? = mutableListOf(),
+    var students: MutableList<StudentEntity>?,
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "career_teacher",
         joinColumns = [JoinColumn(name = "career_id")],
         inverseJoinColumns = [JoinColumn(name = "teacher_id")]
     )
-    var teachers: List<TeacherEntity>? = mutableListOf(),
+    var teachers: MutableList<TeacherEntity>? = mutableListOf(),
 )
