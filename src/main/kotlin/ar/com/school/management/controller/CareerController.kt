@@ -15,6 +15,7 @@ import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -49,6 +50,20 @@ class CareerController {
         ResponseEntity.status(HttpStatus.CREATED).body(careerService.save(request))
 
     @Operation(
+        summary = "Get a career by its ID.",
+        description = "This feature lets all users to get the information of a career by its ID."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Career found successfully!"),
+            ApiResponse(responseCode = "404", description = "The ID does not belong to any career!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @GetMapping("/{id}")
+    fun getCareerById(@PathVariable id: Long): CareerResponse = careerService.getCareerById(id)
+
+    @Operation(
         summary = "Student sign up to career",
         description = "This feature lets admins and moderators to sign up a student in a career and students can sign up in a career too."
     )
@@ -65,5 +80,24 @@ class CareerController {
     @PutMapping("/{careerId}/add-student/{studentSsN}")
     fun signUpStudentToCareer(@PathVariable careerId: Long, @PathVariable studentSsN: Int): ResponseEntity<StudentResponse> =
         ResponseEntity.status(HttpStatus.OK).body(careerService.signUpStudent2Career(careerId, studentSsN))
+
+    @Operation(
+        summary = "Add a teacher to a career",
+        description = "This feature lets admins and moderators to add a teacher in a career."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Teacher added successfully!"),
+            ApiResponse(responseCode = "409", description = "Teacher is already added in the career!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))]),
+            ApiResponse(responseCode = "404", description = "Teacher or Career not found",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @Transactional
+    @PutMapping("/{careerId}/add-teacher/{teacherSsn}")
+    fun signUpTeacherToCareer(@PathVariable careerId: Long, @PathVariable teacherSsn: Int): ResponseEntity<CareerResponse> =
+        ResponseEntity.status(HttpStatus.OK).body(careerService.addTeacher2Career(careerId, teacherSsn))
+
 
 }
