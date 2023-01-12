@@ -2,11 +2,7 @@ package ar.com.school.management.models.response
 
 import ar.com.school.management.models.entity.SubjectEntity
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonManagedReference
 import io.swagger.v3.oas.annotations.media.Schema
-import io.swagger.v3.oas.annotations.responses.ApiResponse
-import io.swagger.v3.oas.annotations.responses.ApiResponses
-
 data class StudentResponse(
     @Schema(title = "Student id", example = "1")
     var id: Long?,
@@ -26,8 +22,8 @@ data class StudentResponse(
     @field:Schema(title = "The Student's email", example = "example@gmail.com")
     var email: String?,
 
-    @Schema(title = "Students career")
-    var careerId: CareerResponse?,
+    @Schema(title = "Student career")
+    var career: CareerSimpleResponse?,
     @JsonIgnore
     var subjects: List<SubjectEntity>?,
 ) {
