@@ -1,7 +1,5 @@
 package ar.com.school.management.models.response
 
-import ar.com.school.management.config.UserViewConfig
-import com.fasterxml.jackson.annotation.JsonView
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class TeacherResponse(
@@ -21,12 +19,10 @@ data class TeacherResponse(
     var phone: Int?,
 
     @field:Schema(title = "The teacher's email", example = "example@gmail.com")
-    @JsonView(UserViewConfig.Internal::class)
     var email: String?,
 
-    @field:Schema(title = "Teacher careers", implementation = CareerResponse::class)
-    @JsonView(UserViewConfig.Internal::class)
-    var careers: MutableList<CareerResponse>?
+    @field:Schema(title = "Teacher careers", implementation = CareerSimpleResponse::class)
+    var careers: MutableList<CareerSimpleResponse>?
 ) {
     constructor() : this(null,null,null,
         null,null,null,null)
