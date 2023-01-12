@@ -1,10 +1,8 @@
 package ar.com.school.management.models.response
 
-import ar.com.school.management.config.UserViewConfig
-import com.fasterxml.jackson.annotation.JsonView
 import io.swagger.v3.oas.annotations.media.Schema
 
-class CareerResponse(
+data class CareerResponse(
     @field:Schema(title = "Career id", example = "1")
     var id: Long?,
 
@@ -14,9 +12,11 @@ class CareerResponse(
     @field:Schema(title = "Career description", example = "The Bachelor of Science in computer is for students who like technology")
     var description: String?,
 
-    @field:Schema(title = "Career teachers", implementation = TeacherResponse::class)
-    @JsonView(value = [UserViewConfig.Internal::class])
-    var teachers: MutableList<TeacherResponse>?
+    @field:Schema(title = "Career teachers", implementation = TeacherSimpleResponse::class)
+    var teachers: MutableList<TeacherSimpleResponse>?,
+
+    @field:Schema(title = "Career students", implementation = StudentSimpleResponse::class)
+    var students: MutableList<StudentSimpleResponse>?
 ) {
-    constructor() : this(null,null, null, null)
+    constructor() : this(null,null, null, null, null)
 }
