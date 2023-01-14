@@ -24,8 +24,9 @@ data class StudentResponse(
 
     @Schema(title = "Student career")
     var career: CareerSimpleResponse?,
-    @JsonIgnore
-    var subjects: List<SubjectEntity>?,
+
+    @Schema(title = "Student subjects")
+    var subjects: List<SubjectSimpleResponse>?,
 ) {
     constructor() : this(null, null, null, null, null, null, null, null)
 }
