@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.transaction.Transactional
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,10 +26,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/career")
-@Schema(
-    name = "Careers management",
-    description = "Here admins and moderators can use the features provided for the management of a career"
-)
+@Tag(name = "Careers Management",
+    description = "Here admins and moderators can use the features provided for the management of a career")
 class CareerController {
     @Autowired
     private lateinit var careerService: CareerService
@@ -82,8 +81,8 @@ class CareerController {
         ResponseEntity.status(HttpStatus.OK).body(careerService.signUpStudent2Career(careerId, studentSsN))
 
     @Operation(
-        summary = "Add a teacher to a career",
-        description = "This feature lets admins and moderators to add a teacher in a career."
+        summary = "Add a subject to a career",
+        description = "This feature lets admins and moderators to add a subject in a career."
     )
     @ApiResponses(
         value = [
@@ -95,9 +94,7 @@ class CareerController {
         ]
     )
     @Transactional
-    @PutMapping("/{careerId}/add-teacher/{teacherSsn}")
-    fun signUpTeacherToCareer(@PathVariable careerId: Long, @PathVariable teacherSsn: Int): ResponseEntity<CareerResponse> =
-        ResponseEntity.status(HttpStatus.OK).body(careerService.addTeacher2Career(careerId, teacherSsn))
-
-
+    @PutMapping("/{careerId}/add-subject/{subjectId}")
+    fun addSubjectToCareer(@PathVariable careerId: Long, @PathVariable subjectId: Long): ResponseEntity<CareerResponse> =
+        ResponseEntity.status(HttpStatus.OK).body(careerService.addSubject2Career(careerId, subjectId))
 }
