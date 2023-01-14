@@ -11,4 +11,5 @@ data class CareerSimpleResponse(
 
 ) {
     constructor() : this(null, null)
+    constructor(name: String?) :this(name, "")
 }
