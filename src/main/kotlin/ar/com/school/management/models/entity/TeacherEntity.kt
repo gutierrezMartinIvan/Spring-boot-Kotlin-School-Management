@@ -34,9 +34,6 @@ class TeacherEntity(
     @Column(nullable = false)
     var password: String,
 
-    @ManyToMany(mappedBy = "teachers")
-    var careers: MutableList<CareerEntity>?,
-
     @ManyToMany
     @JoinTable(
         name = "teacher_subject",

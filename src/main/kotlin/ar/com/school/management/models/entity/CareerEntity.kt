@@ -1,14 +1,18 @@
 package ar.com.school.management.models.entity
 
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 
 @Entity
 @Table(name = "careers")
+@SQLDelete(sql = "UPDATE careers SET deleted = true Where id=?")
+@Where(clause = "deleted=false")
 class CareerEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "career_id")
-    var id: Long? = null,
+    var id: Long?,
 
     @Column(nullable = false, unique = true)
     var name: String,
@@ -23,14 +27,8 @@ class CareerEntity(
     )
     var subjects: MutableList<SubjectEntity>?,
 
-    @OneToMany(mappedBy = "career", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "career", cascade = [CascadeType.ALL])
     var students: MutableList<StudentEntity>?,
 
-    @ManyToMany
-    @JoinTable(
-        name = "career_teacher",
-        joinColumns = [JoinColumn(name = "career_id")],
-        inverseJoinColumns = [JoinColumn(name = "teacher_id")]
-    )
-    var teachers: MutableList<TeacherEntity>?,
+    var deleted: Boolean = false
 )
