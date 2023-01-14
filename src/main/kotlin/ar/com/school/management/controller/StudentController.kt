@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.transaction.Transactional
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,10 +24,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/student")
-@Schema(
-    name = "Students management",
-    description = "Here all the users can interact with the features provided to an student"
-)
+@Tag(name = "Students Management",
+    description = "Here all the users can interact with the features provided to an student")
 class StudentController {
     @Autowired
     private lateinit var studentService: StudentService

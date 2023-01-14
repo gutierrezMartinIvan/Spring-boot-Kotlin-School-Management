@@ -1,16 +1,15 @@
 package ar.com.school.management.controller
 
-import ar.com.school.management.config.UserViewConfig
 import ar.com.school.management.models.request.TeacherRequest
 import ar.com.school.management.models.response.ApiErrorResponse
 import ar.com.school.management.models.response.TeacherResponse
 import ar.com.school.management.service.TeacherService
-import com.fasterxml.jackson.annotation.JsonView
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.transaction.Transactional
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,10 +19,8 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/teacher")
-@Schema(
-    name = "Teachers management",
-    description = "Here admins, moderators and teachers themself can interact with the features provided to a teacher"
-)
+@Tag(name = "Teachers Management",
+    description = "Here admins, moderators and teachers themself can interact with the features provided to a teacher")
 class TeacherController {
     @Autowired
     private lateinit var teacherService: TeacherService
