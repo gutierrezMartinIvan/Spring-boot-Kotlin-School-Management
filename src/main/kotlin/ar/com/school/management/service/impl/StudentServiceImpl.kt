@@ -25,20 +25,18 @@ class StudentServiceImpl : StudentService {
     private lateinit var passwordEncoder: BCryptPasswordEncoder
 
     override fun save(request: StudentRequest): StudentResponse {
-        var entity = request.socialSecurityNumber?.let { repository.findBySocialSecurityNumber(it) }
-        if (entity?.isPresent == true)
+        if (request.socialSecurityNumber?.let { repository.findBySocialSecurityNumber(it).isPresent } !!)
             throw UserRegisteredException("The student is already registered")
 
         var entitySave = mapper.studentDto2Entity(request)
         entitySave.password = passwordEncoder.encode(entitySave.password)
-        var response = repository.save(entitySave)
 
-        return mapper.studentEntity2Dto(response)
+        return mapper.entity2Dto(repository.save(entitySave), StudentResponse::class.java)
     }
 
     override fun getStudentBySocialSecurityNumber(ssNumber: Int): StudentResponse {
-        return mapper.studentEntity2Dto(repository.findBySocialSecurityNumber(ssNumber).orElseThrow{
+        return mapper.entity2Dto(repository.findBySocialSecurityNumber(ssNumber).orElseThrow{
             NotFoundException("The ssNumber: $ssNumber does not belong to any student registered")
-        })
+        }, StudentResponse::class.java)
     }
 }
