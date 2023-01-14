@@ -12,8 +12,8 @@ data class CareerResponse(
     @field:Schema(title = "Career description", example = "The Bachelor of Science in computer is for students who like technology")
     var description: String?,
 
-    @field:Schema(title = "Career teachers", implementation = TeacherSimpleResponse::class)
-    var teachers: MutableList<TeacherSimpleResponse>?,
+    @field:Schema(title = "Career subjects", implementation = SubjectSimpleResponse::class)
+    var subjects: MutableList<SubjectSimpleResponse>?,
 
     @field:Schema(title = "Career students", implementation = StudentSimpleResponse::class)
     var students: MutableList<StudentSimpleResponse>?
