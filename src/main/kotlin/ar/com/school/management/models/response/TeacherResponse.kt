@@ -21,8 +21,8 @@ data class TeacherResponse(
     @field:Schema(title = "The teacher's email", example = "example@gmail.com")
     var email: String?,
 
-    @field:Schema(title = "Teacher careers", implementation = CareerSimpleResponse::class)
-    var careers: MutableList<CareerSimpleResponse>?
+    @field:Schema(title = "Teacher subjects", implementation = SubjectSimpleResponse::class)
+    var subjects: MutableList<SubjectSimpleResponse>?
 ) {
     constructor() : this(null,null,null,
         null,null,null,null)
