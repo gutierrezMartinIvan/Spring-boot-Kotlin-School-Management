@@ -1,8 +1,5 @@
 package ar.com.school.management.models.request
 
-import ar.com.school.management.models.entity.StudentEntity
-import ar.com.school.management.models.entity.SubjectEntity
-import ar.com.school.management.models.entity.TeacherEntity
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
