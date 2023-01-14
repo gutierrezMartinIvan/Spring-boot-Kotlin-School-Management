@@ -28,11 +28,11 @@ class TeacherServiceImpl: TeacherService {
             throw UserRegisteredException("The teacher is already registered!")
         var entity = mapper.teacherDto2Entity(request)
         entity.password = passwordEncoder.encode(entity.password)
-        return mapper.teacherEntity2Dto(teacherRepository.save(entity))
+        return mapper.entity2Dto(teacherRepository.save(entity), TeacherResponse::class.java)
     }
 
     override fun getTeacherBySocialSecurityNumber(ssNumber: Int): TeacherResponse =
-         mapper.teacherEntity2Dto(teacherRepository.findBySocialSecurityNumber(ssNumber).orElseThrow {
+         mapper.entity2Dto(teacherRepository.findBySocialSecurityNumber(ssNumber).orElseThrow {
             NotFoundException("The ssNumber: $ssNumber does not belong to any teacher registered")
-        })
+        }, TeacherResponse::class.java)
 }
