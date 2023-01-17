@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.transaction.Transactional
 import jakarta.validation.Valid
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/teacher")
 @Tag(name = "Teachers Management",
     description = "Here admins, moderators and teachers themself can interact with the features provided to a teacher")
+@SecurityRequirement(name = "Bearer Authentication")
 class TeacherController {
     @Autowired
     private lateinit var teacherService: TeacherService

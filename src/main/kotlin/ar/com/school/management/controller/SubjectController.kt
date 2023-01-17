@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.transaction.Transactional
 import jakarta.validation.Valid
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/subject")
 @Tag(name = "Subjects Management",
     description = "Here admins and moderators can use the features provided for the management of subjects")
+@SecurityRequirement(name = "Bearer Authentication")
 class SubjectController {
     @Autowired
     private lateinit var subjectService: SubjectService

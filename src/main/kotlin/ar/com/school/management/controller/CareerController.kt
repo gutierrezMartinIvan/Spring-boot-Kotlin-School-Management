@@ -5,12 +5,15 @@ import ar.com.school.management.models.response.ApiErrorResponse
 import ar.com.school.management.models.response.CareerResponse
 import ar.com.school.management.models.response.StudentResponse
 import ar.com.school.management.service.CareerService
+import ar.com.school.management.utils.Role
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.annotation.security.RolesAllowed
 import jakarta.transaction.Transactional
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/career")
 @Tag(name = "Careers Management",
     description = "Here admins and moderators can use the features provided for the management of a career")
+@SecurityRequirement(name = "Bearer Authentication")
 class CareerController {
     @Autowired
     private lateinit var careerService: CareerService
