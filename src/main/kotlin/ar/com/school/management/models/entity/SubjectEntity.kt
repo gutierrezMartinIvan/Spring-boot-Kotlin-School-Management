@@ -1,6 +1,6 @@
 package ar.com.school.management.models.entity
 
-import ar.com.school.management.utils.Marks
+import ar.com.school.management.utils.Mark
 import ar.com.school.management.utils.State
 import jakarta.persistence.*
 import org.hibernate.annotations.SQLDelete
@@ -20,7 +20,7 @@ class SubjectEntity(
     var name: String,
 
     var state: State,
-    var mark: Marks,
+    var mark: Mark,
 
     @ManyToMany
     @JoinTable(
