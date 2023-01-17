@@ -28,14 +28,14 @@ class StudentServiceImpl : StudentService {
         if (request.socialSecurityNumber?.let { repository.findBySocialSecurityNumber(it).isPresent } !!)
             throw UserRegisteredException("The student is already registered")
 
-        var entitySave = mapper.studentDto2Entity(request)
+        var entitySave = mapper.map(request, StudentEntity::class.java)
         entitySave.password = passwordEncoder.encode(entitySave.password)
 
-        return mapper.entity2Dto(repository.save(entitySave), StudentResponse::class.java)
+        return mapper.map(repository.save(entitySave), StudentResponse::class.java)
     }
 
     override fun getStudentBySocialSecurityNumber(ssNumber: Int): StudentResponse {
-        return mapper.entity2Dto(repository.findBySocialSecurityNumber(ssNumber).orElseThrow{
+        return mapper.map(repository.findBySocialSecurityNumber(ssNumber).orElseThrow{
             NotFoundException("The ssNumber: $ssNumber does not belong to any student registered")
         }, StudentResponse::class.java)
     }

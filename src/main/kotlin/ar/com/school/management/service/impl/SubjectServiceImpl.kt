@@ -1,6 +1,7 @@
 package ar.com.school.management.service.impl
 
 import ar.com.school.management.exception.NotFoundException
+import ar.com.school.management.models.entity.SubjectEntity
 import ar.com.school.management.models.request.SubjectRequest
 import ar.com.school.management.models.response.SubjectResponse
 import ar.com.school.management.repository.SubjectRepository
@@ -19,11 +20,11 @@ class SubjectServiceImpl: SubjectService {
     private lateinit var mapper: Mapper
     override fun save(request: SubjectRequest): SubjectResponse {
         //TODO("There's to have to implement exceptions")
-        var entitySave = mapper.subjectDto2Entity(request)
-        return mapper.entity2Dto(repository.save(entitySave), SubjectResponse::class.java)
+        var entitySave = mapper.map(request, SubjectEntity::class.java)
+        return mapper.map(repository.save(entitySave), SubjectResponse::class.java)
     }
 
     override fun getSubjectById(id: Long): SubjectResponse =
-        mapper.entity2Dto(repository.findById(id)
+        mapper.map(repository.findById(id)
             .orElseThrow { NotFoundException("The id: $id does not belong to any subject registered") }, SubjectResponse::class.java)
 }

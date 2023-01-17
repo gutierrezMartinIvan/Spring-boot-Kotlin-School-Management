@@ -1,6 +1,6 @@
 package ar.com.school.management.service.impl
 
-import ar.com.school.management.config.Security.JwtService
+import ar.com.school.management.config.security.JwtService
 import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.exception.UserRegisteredException
 import ar.com.school.management.models.entity.UserEntity

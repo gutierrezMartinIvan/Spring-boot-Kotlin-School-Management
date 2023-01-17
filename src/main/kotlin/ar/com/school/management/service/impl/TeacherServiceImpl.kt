@@ -2,6 +2,7 @@ package ar.com.school.management.service.impl
 
 import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.exception.UserRegisteredException
+import ar.com.school.management.models.entity.TeacherEntity
 import ar.com.school.management.models.request.TeacherRequest
 import ar.com.school.management.models.response.TeacherResponse
 import ar.com.school.management.repository.TeacherRepository
@@ -26,13 +27,13 @@ class TeacherServiceImpl: TeacherService {
     override fun save(request: TeacherRequest): TeacherResponse {
         if (request.socialSecurityNumber?.let { teacherRepository.findBySocialSecurityNumber(it).isPresent }!!)
             throw UserRegisteredException("The teacher is already registered!")
-        var entity = mapper.teacherDto2Entity(request)
+        var entity = mapper.map(request, TeacherEntity::class.java)
         entity.password = passwordEncoder.encode(entity.password)
-        return mapper.entity2Dto(teacherRepository.save(entity), TeacherResponse::class.java)
+        return mapper.map(teacherRepository.save(entity), TeacherResponse::class.java)
     }
 
     override fun getTeacherBySocialSecurityNumber(ssNumber: Int): TeacherResponse =
-         mapper.entity2Dto(teacherRepository.findBySocialSecurityNumber(ssNumber).orElseThrow {
+         mapper.map(teacherRepository.findBySocialSecurityNumber(ssNumber).orElseThrow {
             NotFoundException("The ssNumber: $ssNumber does not belong to any teacher registered")
         }, TeacherResponse::class.java)
 }
