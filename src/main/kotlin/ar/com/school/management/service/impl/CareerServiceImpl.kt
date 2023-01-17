@@ -3,6 +3,7 @@ package ar.com.school.management.service.impl
 import ar.com.school.management.exception.CareerRegisteredException
 import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.exception.UserRegisteredException
+import ar.com.school.management.models.entity.CareerEntity
 import ar.com.school.management.models.request.CareerRequest
 import ar.com.school.management.models.response.CareerResponse
 import ar.com.school.management.models.response.StudentResponse
@@ -34,8 +35,8 @@ class CareerServiceImpl: CareerService {
         if (entity?.isPresent == true)
             throw CareerRegisteredException("The career is already registered!")
 
-        var entitySave = mapper.careerDto2Entity(request)
-        return mapper.entity2Dto(repository.save(entitySave), CareerResponse::class.java)
+        var entitySave = mapper.map(request, CareerEntity::class.java)
+        return mapper.map(repository.save(entitySave), CareerResponse::class.java)
     }
 
     override fun signUpStudent2Career(careerId: Long, studentSsN: Int): StudentResponse {
@@ -49,7 +50,7 @@ class CareerServiceImpl: CareerService {
        careerEntity.students!!.add(studentEntity)
        repository.save(careerEntity)
        studentEntity.career = careerEntity
-       return mapper.entity2Dto(studentRepository.save(studentEntity), StudentResponse::class.java)
+       return mapper.map(studentRepository.save(studentEntity), StudentResponse::class.java)
     }
 
     override fun addSubject2Career(careerId: Long, subjectId: Long): CareerResponse {
@@ -63,11 +64,11 @@ class CareerServiceImpl: CareerService {
         careerEntity.subjects!!.add(subjectEntity)
         subjectEntity.careers!!.add(careerEntity)
         subjectRepository.save(subjectEntity)
-        return mapper.entity2Dto(repository.save(careerEntity), CareerResponse::class.java)
+        return mapper.map(repository.save(careerEntity), CareerResponse::class.java)
     }
 
     override fun getCareerById(id: Long): CareerResponse =
-        mapper.entity2Dto(repository.findById(id)
+        mapper.map(repository.findById(id)
             .orElseThrow { NotFoundException("The id: $id does not belong to any career registered") }
             , CareerResponse::class.java)
 }
