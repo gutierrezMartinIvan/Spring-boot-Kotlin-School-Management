@@ -1,4 +1,4 @@
-package ar.com.school.management.config.Security
+package ar.com.school.management.config.security
 
 import ar.com.school.management.utils.Role
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,19 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
-
-    companion object{
-        private val publicEndpoints: Array<String> = arrayOf("/swagger-resources/**",
-            "/swagger-ui/**", "/v2/api-docs",
-            "/v3/api-docs",
-            "/api/docs",
-            "/api/docs/**",
-            "/api/docs/swagger-ui",
-            "/swagger-ui.html",
-            "/**/swagger-ui/**",
-            "/swagger-ui")
-    }
-
     @Autowired
     private lateinit var jwtAuthFilter: JwtAuthenticationFilter
     @Autowired
@@ -38,7 +25,7 @@ class SecurityConfig {
         http.csrf().disable()
             .authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/auth/authenticate", "/auth/register").permitAll()
             .and().authorizeHttpRequests().requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-            .and().authorizeHttpRequests().requestMatchers("/career/{id}").hasAuthority(Role.ADMIN.name)
+            .and().authorizeHttpRequests().requestMatchers("/career/{id}").hasAnyAuthority(Role.STUDENT.name, Role.MODERATOR.name)
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)

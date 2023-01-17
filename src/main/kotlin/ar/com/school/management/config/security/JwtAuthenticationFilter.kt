@@ -1,4 +1,4 @@
-package ar.com.school.management.config.Security
+package ar.com.school.management.config.security
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

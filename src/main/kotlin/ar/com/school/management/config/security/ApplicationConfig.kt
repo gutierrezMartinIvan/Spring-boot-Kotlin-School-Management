@@ -1,4 +1,4 @@
-package ar.com.school.management.config.Security
+package ar.com.school.management.config.security
 
 import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.repository.UserRepository

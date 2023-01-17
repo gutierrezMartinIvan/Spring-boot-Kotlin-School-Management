@@ -1,4 +1,4 @@
-package ar.com.school.management.config.Security
+package ar.com.school.management.config.security
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
