@@ -28,7 +28,11 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 	implementation("org.springframework.security:spring-security-crypto:6.0.1")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	implementation("org.springframework.boot:spring-boot-starter-security:3.0.1")
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("org.postgresql:postgresql")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
 }
