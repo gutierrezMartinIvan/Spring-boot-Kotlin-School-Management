@@ -3,12 +3,16 @@ package ar.com.school.management.models.entity
 import ar.com.school.management.utils.Role
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted = true Where id=?")
+@Where(clause = "deleted=false")
 class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +39,9 @@ class UserEntity(
     var pw: String?,
 
     @Enumerated(EnumType.STRING)
-    var role: Role?
+    var role: Role?,
+
+    var deleted: Boolean = false
 
 ): UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
@@ -51,6 +57,4 @@ class UserEntity(
     override fun isCredentialsNonExpired(): Boolean = true
 
     override fun isEnabled(): Boolean = true
-
-
 }
