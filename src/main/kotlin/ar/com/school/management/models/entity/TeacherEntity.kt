@@ -1,9 +1,13 @@
 package ar.com.school.management.models.entity
 
+import ar.com.school.management.utils.Role
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
 @Table(name = "teachers")
@@ -29,10 +33,10 @@ class TeacherEntity(
 
     @Column(unique = true, nullable = false)
     @Email
-    var email: String,
+    var email: String?,
 
-    @Column(nullable = false)
-    var password: String,
+    @Column(name = "password", nullable = false)
+    var pw: String?,
 
     @ManyToMany
     @JoinTable(
@@ -42,5 +46,23 @@ class TeacherEntity(
     )
     var subjects: MutableList<SubjectEntity>?,
 
+    @Enumerated(EnumType.STRING)
+    var role: Role?,
+
     var deleted: Boolean = false
-)
+
+): UserDetails {
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
+        mutableListOf(SimpleGrantedAuthority(role!!.name))
+
+    override fun getPassword(): String? = pw
+    override fun getUsername(): String? = email
+
+    override fun isAccountNonExpired(): Boolean = true
+
+    override fun isAccountNonLocked(): Boolean = true
+
+    override fun isCredentialsNonExpired(): Boolean = true
+
+    override fun isEnabled(): Boolean = true
+}
