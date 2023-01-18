@@ -1,6 +1,6 @@
 package ar.com.school.management.controller
 
-import ar.com.school.management.models.request.TeacherRequest
+import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.ApiErrorResponse
 import ar.com.school.management.models.response.TeacherResponse
 import ar.com.school.management.service.TeacherService
@@ -40,7 +40,7 @@ class TeacherController {
     )
     @Transactional
     @PostMapping("/save")
-    fun registerTeacher(@Valid @RequestBody request: TeacherRequest): ResponseEntity<TeacherResponse> =
+    fun registerTeacher(@Valid @RequestBody request: UserRequest): ResponseEntity<TeacherResponse> =
         ResponseEntity.status(HttpStatus.CREATED).body(teacherService.save(request))
 
     @Operation(
