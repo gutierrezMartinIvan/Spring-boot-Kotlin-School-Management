@@ -22,6 +22,7 @@ data class UserResponse(
     @field:Schema(title = "The Student's email", example = "example@gmail.com")
     var email: String?,
 
+    @Schema(title = "User role")
     var role: Role?
 ) {
     constructor(): this(null, null, null, null, null, null, null)

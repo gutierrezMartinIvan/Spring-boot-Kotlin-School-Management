@@ -1,6 +1,7 @@
 package ar.com.school.management.models.response
 
 import ar.com.school.management.models.entity.SubjectEntity
+import ar.com.school.management.utils.Role
 import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.v3.oas.annotations.media.Schema
 data class StudentResponse(
@@ -27,6 +28,9 @@ data class StudentResponse(
 
     @Schema(title = "Student subjects")
     var subjects: List<SubjectSimpleResponse>?,
+
+    @Schema(title = "Student role")
+    var role: Role?
 ) {
-    constructor() : this(null, null, null, null, null, null, null, null)
+    constructor() : this(null, null, null, null, null, null, null, null, null)
 }

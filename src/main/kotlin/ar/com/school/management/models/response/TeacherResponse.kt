@@ -1,5 +1,6 @@
 package ar.com.school.management.models.response
 
+import ar.com.school.management.utils.Role
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class TeacherResponse(
@@ -22,8 +23,11 @@ data class TeacherResponse(
     var email: String?,
 
     @field:Schema(title = "Teacher subjects", implementation = SubjectSimpleResponse::class)
-    var subjects: MutableList<SubjectSimpleResponse>?
+    var subjects: MutableList<SubjectSimpleResponse>?,
+
+    @Schema(title = "Teacher role")
+    var role: Role?
 ) {
     constructor() : this(null,null,null,
-        null,null,null,null)
+        null,null,null,null, null)
 }
