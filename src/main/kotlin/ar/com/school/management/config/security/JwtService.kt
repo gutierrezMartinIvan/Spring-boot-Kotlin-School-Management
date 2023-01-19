@@ -36,7 +36,7 @@ class JwtService {
 
     fun isTokenValid(token: String, userDetails: UserDetails): Boolean {
         val username = extractUsername(token)
-        return (username.equals(userDetails.username)) && !isTokenExpired(token)
+        return (username == userDetails.username) && !isTokenExpired(token)
     }
 
     private fun isTokenExpired(token: String) = extractExpiration(token).before(Date())
@@ -51,7 +51,7 @@ class JwtService {
             .body
 
     private fun getSignInKey(): Key {
-        var keyBytes: ByteArray = Decoders.BASE64.decode(SECRET_KEY)
+        val keyBytes: ByteArray = Decoders.BASE64.decode(SECRET_KEY)
         return Keys.hmacShaKeyFor(keyBytes)
     }
 }
