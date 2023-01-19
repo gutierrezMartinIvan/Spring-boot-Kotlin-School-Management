@@ -48,7 +48,7 @@ class CareerController {
         ]
     )
     @Transactional
-    @PostMapping("/save")
+    @PostMapping
     fun registerCareer(@Valid @RequestBody request: CareerRequest): ResponseEntity<CareerResponse> =
         ResponseEntity.status(HttpStatus.CREATED).body(careerService.save(request))
 
@@ -65,6 +65,18 @@ class CareerController {
     )
     @GetMapping("/{id}")
     fun getCareerById(@PathVariable id: Long): CareerResponse = careerService.getCareerById(id)
+
+    @Operation(
+        summary = "Get all the careers",
+        description = "This feature lets all users to get the information of all the careers."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Careers found successfully!"),
+        ]
+    )
+    @GetMapping("")
+    fun getAllCareers(): ResponseEntity<List<CareerResponse>> = ResponseEntity.ok(careerService.getCareers())
 
     @Operation(
         summary = "Student sign up to career",

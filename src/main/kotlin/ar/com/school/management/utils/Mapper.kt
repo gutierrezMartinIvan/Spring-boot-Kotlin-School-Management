@@ -21,6 +21,8 @@ class Mapper {
         }
     }
 
+    fun <S, D> mapLists(sources: List<S>, destinationType: Class<D>): List<D> = sources.map { source -> map(source, destinationType) }
+
     private fun <D> fixNullStudentResponse(destination: StudentResponse): D {
         destination.subjects = destination.subjects ?: mutableListOf()
         destination.career = destination.career ?: CareerSimpleResponse("Not defined yet")
