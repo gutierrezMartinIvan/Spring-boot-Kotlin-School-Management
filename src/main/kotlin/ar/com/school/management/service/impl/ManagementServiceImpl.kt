@@ -52,4 +52,8 @@ class ManagementServiceImpl: ManagementService {
         val jwtToken = jwtService.generateToken(user)
         return AuthenticationResponse(jwtToken)
     }
+
+    override fun getUser(ssNumber: Int): UserResponse =
+        mapper.map(userRepository.findBySocialSecurityNumber(ssNumber)
+            .orElseThrow { NotFoundException("User Not Found") }, UserResponse::class.java)
 }
