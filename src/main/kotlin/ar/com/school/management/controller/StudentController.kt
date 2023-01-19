@@ -60,7 +60,8 @@ class StudentController {
         ]
     )
     @GetMapping("/{ssNumber}")
-    fun getStudentBySocialSecurityNumber(@PathVariable ssNumber: Int) = studentService.getStudentBySocialSecurityNumber(ssNumber)
+    fun getStudentBySocialSecurityNumber(@PathVariable ssNumber: Int): ResponseEntity<StudentResponse> =
+        ResponseEntity.ok(studentService.getStudentBySocialSecurityNumber(ssNumber))
 
     @Operation(
         summary = "Get all the students.",
