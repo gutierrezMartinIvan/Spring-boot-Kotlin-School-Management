@@ -1,6 +1,7 @@
 package ar.com.school.management.service.impl
 
 import ar.com.school.management.config.security.JwtService
+import ar.com.school.management.exception.InvalidRoleException
 import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.exception.UserRegisteredException
 import ar.com.school.management.models.entity.UserEntity
@@ -36,7 +37,11 @@ class ManagementServiceImpl: ManagementService {
         if (request.socialSecurityNumber?.let { userRepository.findBySocialSecurityNumber(it).isPresent } !!)
             throw UserRegisteredException("The user is already registered")
         val userEntity = mapper.map(request, UserEntity::class.java)
-        userEntity.role = if (role.lowercase() == "admin") Role.ADMIN else Role.MODERATOR
+        when(role.lowercase()){
+            "admin" -> userEntity.role = Role.ADMIN
+            "moderator" -> userEntity.role = Role.MODERATOR
+            else -> throw InvalidRoleException("Invalid Role Name: $role")
+        }
         userEntity.pw = passwordEncoder.encode(userEntity.pw)
         return mapper.map(userRepository.save(userEntity), UserResponse::class.java)
     }
@@ -56,4 +61,11 @@ class ManagementServiceImpl: ManagementService {
     override fun getUser(ssNumber: Int): UserResponse =
         mapper.map(userRepository.findBySocialSecurityNumber(ssNumber)
             .orElseThrow { NotFoundException("User Not Found") }, UserResponse::class.java)
+
+    override fun getAllAdmins(role: String): List<UserResponse> =
+        when(role.lowercase()){
+            "admin" -> mapper.mapLists(userRepository.findAllByRole(Role.ADMIN), UserResponse::class.java)
+            "moderator" -> mapper.mapLists(userRepository.findAllByRole(Role.MODERATOR), UserResponse::class.java)
+            else -> mapper.mapLists(userRepository.findAll(), UserResponse::class.java)
+        }
 }

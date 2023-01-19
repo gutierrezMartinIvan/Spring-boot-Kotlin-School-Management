@@ -70,4 +70,16 @@ class ManagementController {
     @GetMapping("/{ssNumber}")
     fun getAdminOrModerator(@PathVariable ssNumber: Int): ResponseEntity<UserResponse> =
         ResponseEntity.ok(service.getUser(ssNumber))
+
+    @Operation(
+        summary = "Get all admins, moderators or both.",
+        description = "This feature lets admins and moderators to get the information of all the admins, moderators or both of them."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "admins found successfully!")
+        ]
+    )
+    @GetMapping
+    fun getAll(@RequestParam role: String): ResponseEntity<List<UserResponse>> = ResponseEntity.ok(service.getAllAdmins(role))
 }
