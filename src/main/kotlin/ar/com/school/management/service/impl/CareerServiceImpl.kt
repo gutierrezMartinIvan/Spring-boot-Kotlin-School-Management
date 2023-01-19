@@ -71,6 +71,4 @@ class CareerServiceImpl: CareerService {
         mapper.map(repository.findById(id)
             .orElseThrow { NotFoundException("The id: $id does not belong to any career registered") }
             , CareerResponse::class.java)
-
-    override fun getCareers(): List<CareerResponse> = mapper.mapLists(repository.findAll(), CareerResponse::class.java)
 }

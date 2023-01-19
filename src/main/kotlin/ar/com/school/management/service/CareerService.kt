@@ -9,5 +9,4 @@ interface CareerService {
     fun signUpStudent2Career(careerId: Long, studentSsN: Int): StudentResponse
     fun addSubject2Career(careerId: Long, subjectId: Long): CareerResponse
     fun getCareerById(id: Long): CareerResponse
-    fun getCareers(): List<CareerResponse>
 }

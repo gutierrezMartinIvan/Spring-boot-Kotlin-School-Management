@@ -39,7 +39,7 @@ class SubjectController {
         ]
     )
     @Transactional
-    @PostMapping
+    @PostMapping("/save")
     fun registerSubject(@Valid @RequestBody request: SubjectRequest) =
         ResponseEntity.status(HttpStatus.CREATED).body(subjectService.save(request))
 

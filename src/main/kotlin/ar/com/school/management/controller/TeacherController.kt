@@ -39,7 +39,7 @@ class TeacherController {
         ]
     )
     @Transactional
-    @PostMapping
+    @PostMapping("/save")
     fun registerTeacher(@Valid @RequestBody request: UserRequest): ResponseEntity<TeacherResponse> =
         ResponseEntity.status(HttpStatus.CREATED).body(teacherService.save(request))
 
@@ -54,6 +54,6 @@ class TeacherController {
                 content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )
-    @GetMapping("/{ssNumber}")
+    @GetMapping("/get/{ssNumber}")
     fun getTeacherBySocialSecurityNumber(@Valid @PathVariable ssNumber: Int) = teacherService.getTeacherBySocialSecurityNumber(ssNumber)
 }

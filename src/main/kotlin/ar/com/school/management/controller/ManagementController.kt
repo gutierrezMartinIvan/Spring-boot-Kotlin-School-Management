@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/auth")
+@SecurityRequirement(name = "Bearer Authentication")
 class ManagementController {
 
     @Autowired

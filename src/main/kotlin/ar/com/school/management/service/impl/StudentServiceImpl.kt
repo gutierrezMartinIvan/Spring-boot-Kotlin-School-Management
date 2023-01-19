@@ -37,11 +37,9 @@ class StudentServiceImpl : StudentService {
         return mapper.map(repository.save(entitySave), StudentResponse::class.java)
     }
 
-    override fun getStudentBySocialSecurityNumber(ssNumber: Int): StudentResponse =
-        mapper.map(repository.findBySocialSecurityNumber(ssNumber).orElseThrow{
+    override fun getStudentBySocialSecurityNumber(ssNumber: Int): StudentResponse {
+        return mapper.map(repository.findBySocialSecurityNumber(ssNumber).orElseThrow{
             NotFoundException("The ssNumber: $ssNumber does not belong to any student registered")
         }, StudentResponse::class.java)
-
-    override fun getAllStudents(): List<StudentResponse> = mapper.mapLists(repository.findAll(), StudentResponse::class.java)
-
+    }
 }

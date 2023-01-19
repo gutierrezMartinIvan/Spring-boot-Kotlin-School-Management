@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("student")
+@RequestMapping("/student")
 @Tag(name = "Students Management",
     description = "Here all the users can interact with the features provided to an student")
 @SecurityRequirement(name = "Bearer Authentication")
@@ -44,7 +44,7 @@ class StudentController {
         ]
     )
     @Transactional
-    @PostMapping
+    @PostMapping("/save")
     fun registerStudent(@Valid @RequestBody request: UserRequest): ResponseEntity<StudentResponse> =
         ResponseEntity.status(HttpStatus.CREATED).body(studentService.save(request))
 
@@ -59,19 +59,7 @@ class StudentController {
                 content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )
-    @GetMapping("/{ssNumber}")
+    @GetMapping("/get/{ssNumber}")
     fun getStudentBySocialSecurityNumber(@PathVariable ssNumber: Int) = studentService.getStudentBySocialSecurityNumber(ssNumber)
-
-    @Operation(
-        summary = "Get all the students.",
-        description = "This feature lets admins and moderators to get the information from all the students."
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Student found successfully!"),
-        ]
-    )
-    @GetMapping
-    fun getStudents(): ResponseEntity<List<StudentResponse>> = ResponseEntity.ok(studentService.getAllStudents())
 
 }
