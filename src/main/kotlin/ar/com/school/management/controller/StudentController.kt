@@ -44,7 +44,7 @@ class StudentController {
         ]
     )
     @Transactional
-    @PostMapping("/save")
+    @PostMapping
     fun registerStudent(@Valid @RequestBody request: UserRequest): ResponseEntity<StudentResponse> =
         ResponseEntity.status(HttpStatus.CREATED).body(studentService.save(request))
 
@@ -59,7 +59,19 @@ class StudentController {
                 content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )
-    @GetMapping("/get/{ssNumber}")
+    @GetMapping("/{ssNumber}")
     fun getStudentBySocialSecurityNumber(@PathVariable ssNumber: Int) = studentService.getStudentBySocialSecurityNumber(ssNumber)
+
+    @Operation(
+        summary = "Get all the students.",
+        description = "This feature lets admins and moderators to get the information from all the students."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Student found successfully!"),
+        ]
+    )
+    @GetMapping
+    fun getStudents(): ResponseEntity<List<StudentResponse>> = ResponseEntity.ok(studentService.getAllStudents())
 
 }
