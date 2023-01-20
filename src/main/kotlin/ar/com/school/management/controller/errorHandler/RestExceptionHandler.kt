@@ -1,6 +1,7 @@
 package ar.com.school.management.controller.errorHandler
 
 import ar.com.school.management.exception.CareerRegisteredException
+import ar.com.school.management.exception.InvalidRoleException
 import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.exception.UserRegisteredException
 import ar.com.school.management.models.response.ApiErrorResponse
@@ -10,11 +11,11 @@ import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
-import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-@ControllerAdvice
+@RestControllerAdvice
 class RestExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(value = [UserRegisteredException::class])
@@ -46,6 +47,26 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         )
         return handleExceptionInternal(ex, error, HttpHeaders(), HttpStatus.CONFLICT, request)
     }
+
+    @ExceptionHandler(value = [InvalidRoleException::class])
+    fun handleInvalidRoleException(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
+        val error = ApiErrorResponse(
+            HttpStatus.BAD_REQUEST,
+            ex.message,
+            listOf("Role Not Found")
+        )
+        return handleExceptionInternal(ex, error, HttpHeaders(), HttpStatus.BAD_REQUEST, request)
+    }
+    /*@ExceptionHandler(value = [AuthenticationException::class])
+    fun handleAuthenticationException(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
+        val error = ApiErrorResponse(
+            HttpStatus.FORBIDDEN,
+            "eAccess denied",
+            listOf("You dont have enough permissions to use this functionality")
+        )
+        return handleExceptionInternal(ex, error, HttpHeaders(), HttpStatus.CONFLICT, request)
+    }*/
+
     override fun handleMethodArgumentNotValid(
         ex: MethodArgumentNotValidException,
         headers: HttpHeaders,
