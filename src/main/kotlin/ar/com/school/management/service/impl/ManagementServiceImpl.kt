@@ -9,6 +9,8 @@ import ar.com.school.management.models.request.AuthenticationRequest
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.AuthenticationResponse
 import ar.com.school.management.models.response.UserResponse
+import ar.com.school.management.repository.StudentRepository
+import ar.com.school.management.repository.TeacherRepository
 import ar.com.school.management.repository.UserRepository
 import ar.com.school.management.service.ManagementService
 import ar.com.school.management.utils.Mapper
@@ -26,6 +28,10 @@ class ManagementServiceImpl: ManagementService {
     @Autowired
     private lateinit var userRepository: UserRepository
     @Autowired
+    private lateinit var studentRepository: StudentRepository
+    @Autowired
+    lateinit var teacherRepository: TeacherRepository
+    @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
     @Autowired
     private lateinit var authenticationManager: AuthenticationManager
@@ -34,8 +40,7 @@ class ManagementServiceImpl: ManagementService {
 
 
     override fun registerAdminOrModerator(request: UserRequest, role: String): UserResponse {
-        if (request.socialSecurityNumber?.let { userRepository.findBySocialSecurityNumber(it).isPresent } !!)
-            throw UserRegisteredException("The user is already registered")
+        verifyIfAlreadyRegistered(request.socialSecurityNumber)
         val userEntity = mapper.map(request, UserEntity::class.java)
         when(role.lowercase()){
             "admin" -> userEntity.role = Role.ADMIN
@@ -68,4 +73,13 @@ class ManagementServiceImpl: ManagementService {
             "moderator" -> mapper.mapLists(userRepository.findAllByRole(Role.MODERATOR), UserResponse::class.java)
             else -> mapper.mapLists(userRepository.findAll(), UserResponse::class.java)
         }
+
+    private fun verifyIfAlreadyRegistered(socialSecurityNumber: Int?) {
+        if (userRepository.findBySocialSecurityNumber(socialSecurityNumber!!).isPresent)
+            throw UserRegisteredException("The user is already registered")
+        if (studentRepository.findBySocialSecurityNumber(socialSecurityNumber).isPresent)
+            throw UserRegisteredException("The user is already registered as student")
+        if (teacherRepository.findBySocialSecurityNumber(socialSecurityNumber).isPresent )
+            throw UserRegisteredException("The user is already registered as teacher")
+    }
 }
