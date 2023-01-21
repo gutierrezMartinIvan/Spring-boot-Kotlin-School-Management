@@ -84,4 +84,19 @@ class StudentController {
     @PatchMapping("/{ssNumber}")
     fun updateStudent(@PathVariable ssNumber: Int, @RequestBody request: UserRequest): ResponseEntity<StudentResponse> =
         ResponseEntity.ok(studentService.updateStudent(ssNumber, request))
+
+    @Operation(
+        summary = "Delete a student",
+        description = "This feature lets admins and moderator delete a student."
+    )
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "Student deleted successfully!") ,
+        ApiResponse(responseCode = "404", description = "The ID does not belong to any student!",
+            content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+    ]
+    )
+    @Transactional
+    @DeleteMapping("/{ssNumber}")
+    fun deleteModerator(@PathVariable ssNumber: Int): Unit =
+        studentService.deleteStudent(ssNumber)
 }

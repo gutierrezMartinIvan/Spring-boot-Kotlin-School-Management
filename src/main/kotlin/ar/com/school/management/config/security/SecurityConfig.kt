@@ -37,6 +37,7 @@ class SecurityConfig {
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/auth/authenticate", "/auth/register").permitAll()
 
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.PATCH,"/student/{ssNumber}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.DELETE, "/student/{ssNumber}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/student").authenticated()
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/student/{ssNumber}").authenticated()
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST ,"/student").permitAll()

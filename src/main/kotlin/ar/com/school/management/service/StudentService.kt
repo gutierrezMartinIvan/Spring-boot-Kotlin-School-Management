@@ -9,4 +9,5 @@ interface StudentService {
     fun getStudentBySocialSecurityNumber(ssNumber: Int): StudentResponse
     fun getAllStudents(): List<StudentResponse>
     fun updateStudent(ssNumber: Int, request: UserRequest): StudentResponse
+    fun deleteStudent(ssNumber: Int)
 }

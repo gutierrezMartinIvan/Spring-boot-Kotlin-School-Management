@@ -20,7 +20,7 @@ class StudentServiceImpl : StudentService {
     @Autowired
     private lateinit var managerRepository: ManagerRepository
     @Autowired
-    lateinit var teacherRepository: TeacherRepository
+    private lateinit var teacherRepository: TeacherRepository
     @Autowired
     private lateinit var repository: StudentRepository
     @Autowired
@@ -47,6 +47,12 @@ class StudentServiceImpl : StudentService {
             .orElseThrow { NotFoundException("The admin with the social security number: $ssNumber does not exists!") }
         mapper.updateUser(studentEntity, request)
         return mapper.map(repository.save(studentEntity), StudentResponse::class.java)
+    }
+
+    override fun deleteStudent(ssNumber: Int) {
+        var studentEntity = repository.findBySocialSecurityNumber(ssNumber)
+            .orElseThrow { NotFoundException("The admin with the social security number: $ssNumber does not exists!") }
+        repository.delete(studentEntity)
     }
 
     private fun verifyIfAlreadyRegistered(socialSecurityNumber: Int?) {
