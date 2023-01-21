@@ -74,6 +74,19 @@ class ManagementServiceImpl: ManagementService {
             else -> mapper.mapLists(userRepository.findAll(), UserResponse::class.java)
         }
 
+    override fun updateUser(ssNumber: Int, request: UserRequest): UserResponse {
+        var userEntity = userRepository.findBySocialSecurityNumber(ssNumber)
+            .orElseThrow { NotFoundException("The admin with the social security number: $ssNumber does not exists!") }
+        mapper.updateAdminOrModerator(userEntity, request)
+        return mapper.map(userRepository.save(userEntity), UserResponse::class.java)
+    }
+
+    override fun deleteModerator(ssNumber: Int) {
+        var userEntity = userRepository.findBySocialSecurityNumber(ssNumber)
+            .orElseThrow { NotFoundException("The admin with the social security number: $ssNumber does not exists!") }
+        userRepository.delete(userEntity)
+    }
+
     private fun verifyIfAlreadyRegistered(socialSecurityNumber: Int?) {
         if (userRepository.findBySocialSecurityNumber(socialSecurityNumber!!).isPresent)
             throw UserRegisteredException("The user is already registered")

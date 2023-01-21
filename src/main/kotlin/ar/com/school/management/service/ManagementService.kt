@@ -10,4 +10,6 @@ interface ManagementService {
     fun authenticate(request: AuthenticationRequest): AuthenticationResponse
     fun getUser(ssNumber: Int): UserResponse
     fun getAllAdmins(role: String): List<UserResponse>
+    fun updateUser(ssNumber: Int, request: UserRequest): UserResponse
+    fun deleteModerator(ssNumber: Int)
 }
