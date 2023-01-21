@@ -97,6 +97,6 @@ class StudentController {
     )
     @Transactional
     @DeleteMapping("/{ssNumber}")
-    fun deleteModerator(@PathVariable ssNumber: Int): Unit =
+    fun deleteStudent(@PathVariable ssNumber: Int): Unit =
         studentService.deleteStudent(ssNumber)
 }
