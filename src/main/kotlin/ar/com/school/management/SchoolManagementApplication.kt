@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class SchoolManagementApplication
 
 fun main(args: Array<String>) {
-	runApplication<SchoolManagementApplication>(*args)
+    runApplication<SchoolManagementApplication>(*args)
 }
