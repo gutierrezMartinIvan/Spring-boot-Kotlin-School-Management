@@ -72,7 +72,7 @@ class StudentController {
 
     @Operation(
         summary = "Updates a student",
-        description = "This feature lets admins,moderators or the student itself to update student info."
+        description = "This feature lets admins and moderators to update student info."
     )
     @ApiResponses(value = [
         ApiResponse(responseCode = "200", description = "Student updated successfully!") ,
