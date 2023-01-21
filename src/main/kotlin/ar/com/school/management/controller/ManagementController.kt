@@ -33,7 +33,11 @@ class ManagementController {
         summary = "Register a moderator or admin",
         description = "This feature lets register admins and moderators."
     )
-    @ApiResponses(value = [ ApiResponse(responseCode = "200", description = "Moderator or admin registered successfully!") ])
+    @ApiResponses(value = [ ApiResponse(responseCode = "200", description = "Moderator or admin registered successfully!"),
+        ApiResponse(responseCode = "409", description = "Moderator or admin is already registered!",
+            content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
     @Transactional
     @PostMapping("/register")
     fun register(@RequestBody request: UserRequest, @RequestParam role: String): ResponseEntity<UserResponse> =
