@@ -112,11 +112,11 @@ class ManagementController {
         ResponseEntity.ok(service.updateUser(ssNumber, request))
 
     @Operation(
-        summary = "Updates a moderator",
-        description = "This feature lets admins and moderator to update other moderators or itself."
+        summary = "Delete moderator",
+        description = "This feature lets admins delete moderators."
     )
     @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "Moderator updated successfully!") ,
+        ApiResponse(responseCode = "200", description = "Moderator deleted successfully!") ,
         ApiResponse(responseCode = "404", description = "The ID does not belong to any moderator!",
             content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
     ]
