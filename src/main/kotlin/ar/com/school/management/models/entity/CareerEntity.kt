@@ -6,7 +6,7 @@ import org.hibernate.annotations.Where
 
 @Entity
 @Table(name = "careers")
-@SQLDelete(sql = "UPDATE careers SET deleted = true Where id=?")
+@SQLDelete(sql = "UPDATE careers SET deleted = true Where career_id=?")
 @Where(clause = "deleted=false")
 class CareerEntity(
     @Id
