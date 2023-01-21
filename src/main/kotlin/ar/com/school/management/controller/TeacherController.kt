@@ -2,6 +2,7 @@ package ar.com.school.management.controller
 
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.ApiErrorResponse
+import ar.com.school.management.models.response.StudentResponse
 import ar.com.school.management.models.response.TeacherResponse
 import ar.com.school.management.service.TeacherService
 import io.swagger.v3.oas.annotations.Operation
@@ -56,4 +57,47 @@ class TeacherController {
     )
     @GetMapping("/{ssNumber}")
     fun getTeacherBySocialSecurityNumber(@Valid @PathVariable ssNumber: Int) = teacherService.getTeacherBySocialSecurityNumber(ssNumber)
+
+    @Operation(
+        summary = "Get all the teachers.",
+        description = "This feature lets everyone get the information from all the teachers."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Teachers found successfully!"),
+        ]
+    )
+    @GetMapping
+    fun getTeachers(): ResponseEntity<List<TeacherResponse>> = ResponseEntity.ok(teacherService.getAllTeachers())
+
+    @Operation(
+        summary = "Updates a student",
+        description = "This feature lets admins,moderators or the teacher itself to update teachers info."
+    )
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "Teacher updated successfully!") ,
+        ApiResponse(responseCode = "404", description = "The ID does not belong to any teacher!",
+            content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @Transactional
+    @PatchMapping("/{ssNumber}")
+    fun updateTeacher(@PathVariable ssNumber: Int, @RequestBody request: UserRequest): ResponseEntity<TeacherResponse> =
+        ResponseEntity.ok(teacherService.updateTeacher(ssNumber, request))
+
+    @Operation(
+        summary = "Delete a teachers",
+        description = "This feature lets admins and moderator delete a teachers."
+    )
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "Teachers deleted successfully!") ,
+        ApiResponse(responseCode = "404", description = "The ID does not belong to any teachers!",
+            content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @Transactional
+    @DeleteMapping("/{ssNumber}")
+    fun deleteTeacher(@PathVariable ssNumber: Int): Unit =
+        teacherService.deleteTeacher(ssNumber)
+
 }

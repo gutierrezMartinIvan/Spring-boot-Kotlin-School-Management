@@ -4,6 +4,7 @@ import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.exception.UserRegisteredException
 import ar.com.school.management.models.entity.TeacherEntity
 import ar.com.school.management.models.request.UserRequest
+import ar.com.school.management.models.response.StudentResponse
 import ar.com.school.management.models.response.TeacherResponse
 import ar.com.school.management.repository.ManagerRepository
 import ar.com.school.management.repository.StudentRepository
@@ -40,6 +41,21 @@ class TeacherServiceImpl: TeacherService {
          mapper.map(teacherRepository.findBySocialSecurityNumber(ssNumber).orElseThrow {
             NotFoundException("The ssNumber: $ssNumber does not belong to any teacher registered")
         }, TeacherResponse::class.java)
+
+    override fun getAllTeachers(): List<TeacherResponse> = mapper.mapLists(teacherRepository.findAll(), TeacherResponse::class.java)
+
+    override fun updateTeacher(ssNumber: Int, request: UserRequest): TeacherResponse {
+        var teacherEntity = teacherRepository.findBySocialSecurityNumber(ssNumber)
+            .orElseThrow { NotFoundException("The teacher with the social security number: $ssNumber does not exists!") }
+        mapper.updateUser(teacherEntity, request)
+        return mapper.map(teacherRepository.save(teacherEntity), TeacherResponse::class.java)
+    }
+
+    override fun deleteTeacher(ssNumber: Int) {
+        var teacherEntity = teacherRepository.findBySocialSecurityNumber(ssNumber)
+            .orElseThrow { NotFoundException("The teacher with the social security number: $ssNumber does not exists!") }
+        teacherRepository.delete(teacherEntity)
+    }
 
     private fun verifyIfAlreadyRegistered(socialSecurityNumber: Int?) {
         if (managerRepository.findBySocialSecurityNumber(socialSecurityNumber!!).isPresent)
