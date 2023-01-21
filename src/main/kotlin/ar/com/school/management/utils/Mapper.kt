@@ -63,7 +63,4 @@ class Mapper {
         if (updatedRequest.pw != null)
             entity2Update.pw = passwordEncoder.encode(updatedRequest.pw)
     }
-
-
-    //fun <S, D>update(source: S, update: Class<D>): D = map()
 }
