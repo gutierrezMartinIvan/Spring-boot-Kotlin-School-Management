@@ -16,12 +16,7 @@ import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/student")
@@ -75,4 +70,18 @@ class StudentController {
     @GetMapping
     fun getStudents(): ResponseEntity<List<StudentResponse>> = ResponseEntity.ok(studentService.getAllStudents())
 
+    @Operation(
+        summary = "Updates a student",
+        description = "This feature lets admins,moderators or the student itself to update student info."
+    )
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "Student updated successfully!") ,
+        ApiResponse(responseCode = "404", description = "The ID does not belong to any student!",
+            content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+    ]
+    )
+    @Transactional
+    @PatchMapping("/{ssNumber}")
+    fun updateStudent(@PathVariable ssNumber: Int, @RequestBody request: UserRequest): ResponseEntity<StudentResponse> =
+        ResponseEntity.ok(studentService.updateStudent(ssNumber, request))
 }
