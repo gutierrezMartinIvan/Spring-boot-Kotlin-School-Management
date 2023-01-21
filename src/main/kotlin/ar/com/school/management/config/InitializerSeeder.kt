@@ -3,10 +3,7 @@ package ar.com.school.management.config
 import ar.com.school.management.models.request.CareerRequest
 import ar.com.school.management.models.request.SubjectRequest
 import ar.com.school.management.models.request.UserRequest
-import ar.com.school.management.service.CareerService
-import ar.com.school.management.service.ManagementService
-import ar.com.school.management.service.StudentService
-import ar.com.school.management.service.SubjectService
+import ar.com.school.management.service.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
@@ -17,7 +14,7 @@ class InitializerSeeder: CommandLineRunner {
     @Autowired
     private lateinit var studentService: StudentService
     @Autowired
-    private lateinit var teacherService: StudentService
+    private lateinit var teacherService: TeacherService
     @Autowired
     private lateinit var careerService: CareerService
     @Autowired
