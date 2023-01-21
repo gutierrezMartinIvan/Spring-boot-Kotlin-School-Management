@@ -5,6 +5,8 @@ import ar.com.school.management.exception.UserRegisteredException
 import ar.com.school.management.models.entity.TeacherEntity
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.TeacherResponse
+import ar.com.school.management.repository.ManagerRepository
+import ar.com.school.management.repository.StudentRepository
 import ar.com.school.management.repository.TeacherRepository
 import ar.com.school.management.service.TeacherService
 import ar.com.school.management.utils.Mapper
@@ -15,19 +17,19 @@ import org.springframework.stereotype.Service
 
 @Service
 class TeacherServiceImpl: TeacherService {
-
+    @Autowired
+    private lateinit var managerRepository: ManagerRepository
     @Autowired
     private lateinit var teacherRepository: TeacherRepository
-
+    @Autowired
+    private lateinit var studentRepository: StudentRepository
     @Autowired
     private lateinit var mapper: Mapper
-
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
 
     override fun save(request: UserRequest): TeacherResponse {
-        if (request.socialSecurityNumber?.let { teacherRepository.findBySocialSecurityNumber(it).isPresent }!!)
-            throw UserRegisteredException("The teacher is already registered!")
+        verifyIfAlreadyRegistered(request.socialSecurityNumber)
         var entity = mapper.map(request, TeacherEntity::class.java)
         entity.role = Role.TEACHER
         entity.pw = passwordEncoder.encode(entity.pw)
@@ -38,4 +40,13 @@ class TeacherServiceImpl: TeacherService {
          mapper.map(teacherRepository.findBySocialSecurityNumber(ssNumber).orElseThrow {
             NotFoundException("The ssNumber: $ssNumber does not belong to any teacher registered")
         }, TeacherResponse::class.java)
+
+    private fun verifyIfAlreadyRegistered(socialSecurityNumber: Int?) {
+        if (managerRepository.findBySocialSecurityNumber(socialSecurityNumber!!).isPresent)
+            throw UserRegisteredException("The user is already registered as manager")
+        if (studentRepository.findBySocialSecurityNumber(socialSecurityNumber).isPresent)
+            throw UserRegisteredException("The user is already registered as student")
+        if (teacherRepository.findBySocialSecurityNumber(socialSecurityNumber).isPresent )
+            throw UserRegisteredException("The user is already registered!")
+    }
 }
