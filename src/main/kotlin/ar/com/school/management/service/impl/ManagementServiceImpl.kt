@@ -30,7 +30,7 @@ class ManagementServiceImpl: ManagementService {
     @Autowired
     private lateinit var studentRepository: StudentRepository
     @Autowired
-    lateinit var teacherRepository: TeacherRepository
+    private lateinit var teacherRepository: TeacherRepository
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
     @Autowired
