@@ -3,47 +3,39 @@ package ar.com.school.management.models.entity
 import ar.com.school.management.utils.Role
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
-import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.Where
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-
-@Entity
-@Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted = true Where user_id=?")
-@Where(clause = "deleted=false")
-class UserEntity(
+@MappedSuperclass
+open class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    var id: Long?,
+    open var id: Long?,
 
     @Column(name = "social_security_number", unique = true, nullable = false)
-    var socialSecurityNumber: Int?,
+    open var socialSecurityNumber: Int?,
 
     @Column(nullable = false)
-    var name: String?,
+    open var name: String?,
 
     @Column(nullable = false)
-    var surname: String?,
+    open var surname: String?,
 
     @Column(name = "phone_number", unique = true, nullable = false)
-    var phone: Int? = null,
+    open var phone: Int? = null,
 
     @Column(unique = true, nullable = false)
     @Email
-    var email: String?,
+    open var email: String?,
 
     @Column(name = "password", nullable = false)
-    var pw: String?,
+    open var pw: String?,
 
     @Enumerated(EnumType.STRING)
-    var role: Role?,
+    open var role: Role?,
 
-    var deleted: Boolean = false
-
-): UserDetails {
+    ): UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
         mutableListOf(SimpleGrantedAuthority(role!!.name))
 

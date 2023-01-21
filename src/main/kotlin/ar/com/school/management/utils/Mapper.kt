@@ -1,6 +1,6 @@
 package ar.com.school.management.utils
 
-import ar.com.school.management.models.entity.UserEntity
+import ar.com.school.management.models.entity.User
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.*
 import org.modelmapper.ModelMapper
@@ -51,7 +51,7 @@ class Mapper {
         return destination as D
     }
 
-    fun updateAdminOrModerator(entity2Update: UserEntity, updatedRequest: UserRequest) {
+    fun updateUser(entity2Update: User, updatedRequest: UserRequest) {
         if (updatedRequest.name != null)
             entity2Update.name = updatedRequest.name
         if (updatedRequest.email != null)

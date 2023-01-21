@@ -1,7 +1,7 @@
 package ar.com.school.management.config.security
 
 import ar.com.school.management.exception.NotFoundException
-import ar.com.school.management.repository.UserRepository
+import ar.com.school.management.repository.ManagerRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 class ApplicationConfig {
     @Autowired
-    private lateinit var repository: UserRepository
+    private lateinit var repository: ManagerRepository
 
     @Bean
     fun userDetailsService() = UserDetailsService {

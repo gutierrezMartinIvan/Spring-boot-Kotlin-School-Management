@@ -17,26 +17,26 @@ class TeacherEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "teacher_id")
-    var id: Long?,
+    override var id: Long?,
 
     @Column(name = "social_security_number", unique = true, nullable = false)
-    var socialSecurityNumber: Int,
+    override var socialSecurityNumber: Int?,
 
     @Column(nullable = false)
-    var name: String,
+    override var name: String?,
 
     @Column(nullable = false)
-    var surname: String,
+    override var surname: String?,
 
     @Column(name = "phone_number", unique = true, nullable = false)
-    var phone: Int,
+    override var phone: Int?,
 
     @Column(unique = true, nullable = false)
     @Email
-    var email: String?,
+    override var email: String?,
 
     @Column(name = "password", nullable = false)
-    var pw: String?,
+    override var pw: String?,
 
     @ManyToMany
     @JoinTable(
@@ -47,22 +47,8 @@ class TeacherEntity(
     var subjects: MutableList<SubjectEntity>?,
 
     @Enumerated(EnumType.STRING)
-    var role: Role?,
+    override var role: Role?,
 
     var deleted: Boolean = false
 
-): UserDetails {
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
-        mutableListOf(SimpleGrantedAuthority(role!!.name))
-
-    override fun getPassword(): String? = pw
-    override fun getUsername(): String? = email
-
-    override fun isAccountNonExpired(): Boolean = true
-
-    override fun isAccountNonLocked(): Boolean = true
-
-    override fun isCredentialsNonExpired(): Boolean = true
-
-    override fun isEnabled(): Boolean = true
-}
+): User(id, socialSecurityNumber, name, surname, phone, email, pw, role)
