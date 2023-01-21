@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails
 open class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     open var id: Long?,
 
     @Column(name = "social_security_number", unique = true, nullable = false)
