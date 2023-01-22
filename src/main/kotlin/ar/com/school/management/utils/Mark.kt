@@ -1,6 +1,7 @@
 package ar.com.school.management.utils
 
 enum class Mark(mark: Int) {
+    ZERO(0),
     ONE(1),
     TWO(2),
     THREE(3),
