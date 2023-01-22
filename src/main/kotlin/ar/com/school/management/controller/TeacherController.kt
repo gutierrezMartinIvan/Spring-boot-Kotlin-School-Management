@@ -1,7 +1,9 @@
 package ar.com.school.management.controller
 
+import ar.com.school.management.models.request.AuthenticationRequest
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.ApiErrorResponse
+import ar.com.school.management.models.response.AuthenticationResponse
 import ar.com.school.management.models.response.StudentResponse
 import ar.com.school.management.models.response.TeacherResponse
 import ar.com.school.management.service.TeacherService
@@ -99,5 +101,20 @@ class TeacherController {
     @DeleteMapping("/{ssNumber}")
     fun deleteTeacher(@PathVariable ssNumber: Int): Unit =
         teacherService.deleteTeacher(ssNumber)
+
+    @Operation(
+        summary = "Authenticate.",
+        description = "This feature lets a teacher log in."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Authenticated successfully!"),
+            ApiResponse(responseCode = "404", description = "The email does not belong to any teacher!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @PostMapping("/authenticate")
+    fun authenticate(@RequestBody authenticate: AuthenticationRequest): ResponseEntity<AuthenticationResponse> =
+        ResponseEntity.ok(teacherService.authenticate(authenticate))
 
 }

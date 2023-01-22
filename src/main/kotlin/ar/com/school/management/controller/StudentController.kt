@@ -1,7 +1,9 @@
 package ar.com.school.management.controller
 
+import ar.com.school.management.models.request.AuthenticationRequest
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.ApiErrorResponse
+import ar.com.school.management.models.response.AuthenticationResponse
 import ar.com.school.management.models.response.StudentResponse
 import ar.com.school.management.service.StudentService
 import io.swagger.v3.oas.annotations.Operation
@@ -99,4 +101,19 @@ class StudentController {
     @DeleteMapping("/{ssNumber}")
     fun deleteStudent(@PathVariable ssNumber: Int): Unit =
         studentService.deleteStudent(ssNumber)
+
+    @Operation(
+        summary = "Authenticate.",
+        description = "This feature lets a student log in."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Authenticated successfully!"),
+            ApiResponse(responseCode = "404", description = "The email does not belong to any student!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @PostMapping("/authenticate")
+    fun authenticate(@RequestBody authenticate: AuthenticationRequest): ResponseEntity<AuthenticationResponse> =
+        ResponseEntity.ok(studentService.authenticate(authenticate))
 }

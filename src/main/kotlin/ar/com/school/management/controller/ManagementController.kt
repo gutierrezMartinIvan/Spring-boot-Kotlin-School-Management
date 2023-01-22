@@ -50,7 +50,7 @@ class ManagementController {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Authenticated successfully!"),
-            ApiResponse(responseCode = "404", description = "The email does not belong to moderator or admin!",
+            ApiResponse(responseCode = "404", description = "The email does not belong to any moderator or admin!",
                 content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )

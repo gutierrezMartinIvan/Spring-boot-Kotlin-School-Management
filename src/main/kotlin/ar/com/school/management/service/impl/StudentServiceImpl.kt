@@ -4,7 +4,9 @@ import ar.com.school.management.config.security.JwtService
 import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.exception.UserRegisteredException
 import ar.com.school.management.models.entity.StudentEntity
+import ar.com.school.management.models.request.AuthenticationRequest
 import ar.com.school.management.models.request.UserRequest
+import ar.com.school.management.models.response.AuthenticationResponse
 import ar.com.school.management.models.response.StudentResponse
 import ar.com.school.management.models.response.UserResponse
 import ar.com.school.management.repository.StudentRepository
@@ -15,6 +17,8 @@ import ar.com.school.management.utils.Mapper
 import ar.com.school.management.utils.Role
 import ar.com.school.management.utils.VerifyIfUserIsAlreadyRegistered
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -32,6 +36,8 @@ class StudentServiceImpl : StudentService {
     private lateinit var jwtService: JwtService
     @Autowired
     private lateinit var verify: VerifyIfUserIsAlreadyRegistered
+    @Autowired
+    private lateinit var authenticationManager: AuthenticationManager
 
     override fun save(request: UserRequest): StudentResponse {
         verify.verify(request)
@@ -58,5 +64,17 @@ class StudentServiceImpl : StudentService {
         var studentEntity = repository.findBySocialSecurityNumber(ssNumber)
             .orElseThrow { NotFoundException("The student with the social security number: $ssNumber does not exists!") }
         repository.delete(studentEntity)
+    }
+
+    override fun authenticate(request: AuthenticationRequest): AuthenticationResponse {
+        authenticationManager.authenticate(
+            UsernamePasswordAuthenticationToken(
+                request.email,
+                request.pw
+            )
+        )
+        val user = repository.findByEmail(request.email).orElseThrow{ NotFoundException("Student Not Found") }
+        val jwtToken = jwtService.generateToken(user)
+        return AuthenticationResponse(jwtToken)
     }
 }
