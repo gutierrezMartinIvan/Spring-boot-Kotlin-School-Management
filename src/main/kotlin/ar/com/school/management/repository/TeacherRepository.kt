@@ -7,5 +7,7 @@ import java.util.*
 
 @Repository
 interface TeacherRepository : JpaRepository<TeacherEntity, Long> {
-    fun findBySocialSecurityNumber(socialSecurityNumber: Int): Optional<TeacherEntity>
+    fun findByPhone(phone: Int): Optional<TeacherEntity>
+    fun findBySocialSecurityNumber(ssNumber: Int): Optional<TeacherEntity>
+    fun findByEmail(email: String): Optional<TeacherEntity>
 }
