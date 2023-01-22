@@ -57,4 +57,19 @@ class SubjectController {
     @GetMapping("/{id}")
     fun getSubjectById(@PathVariable id: Long): ResponseEntity<SubjectResponse> =
         ResponseEntity.status(HttpStatus.OK).body(subjectService.getSubjectById(id))
+
+    @Operation(
+        summary = "add a student to a subject",
+        description = "This feature lets admins, moderators and teachers be able to register a student to a subject."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Student added correctly!"),
+            ApiResponse(responseCode = "404", description = "Student or career not found!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @Transactional
+    @PostMapping("/{id}/{ssn}")
+    fun addStudentToSubject(@PathVariable ssn: Int, @PathVariable id: Long) = ResponseEntity.ok().body(subjectService.addStudent2Subject(id, ssn))
 }
