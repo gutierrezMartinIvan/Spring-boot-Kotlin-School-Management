@@ -16,18 +16,12 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 class ApplicationConfig {
     @Autowired
-    private lateinit var repository: ManagerRepository
-
-    @Bean
-    fun userDetailsService() = UserDetailsService {
-        username ->  repository.findByEmail(username)
-        .orElseThrow{ NotFoundException("User not found") }
-    }
+    private lateinit var myUserDetailsService: MyUserDetailsService
 
     @Bean
     fun authenticationProvider(): AuthenticationProvider {
         val authProvider = DaoAuthenticationProvider()
-        authProvider.setUserDetailsService(userDetailsService())
+        authProvider.setUserDetailsService(myUserDetailsService)
         authProvider.setPasswordEncoder(passwordEncoder())
         return authProvider
     }
