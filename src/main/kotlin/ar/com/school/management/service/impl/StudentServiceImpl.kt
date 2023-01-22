@@ -6,12 +6,14 @@ import ar.com.school.management.exception.UserRegisteredException
 import ar.com.school.management.models.entity.StudentEntity
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.StudentResponse
+import ar.com.school.management.models.response.UserResponse
 import ar.com.school.management.repository.StudentRepository
 import ar.com.school.management.repository.TeacherRepository
 import ar.com.school.management.repository.ManagerRepository
 import ar.com.school.management.service.StudentService
 import ar.com.school.management.utils.Mapper
 import ar.com.school.management.utils.Role
+import ar.com.school.management.utils.VerifyIfUserIsAlreadyRegistered
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -21,10 +23,6 @@ import java.net.http.HttpRequest
 @Service
 class StudentServiceImpl : StudentService {
     @Autowired
-    private lateinit var managerRepository: ManagerRepository
-    @Autowired
-    private lateinit var teacherRepository: TeacherRepository
-    @Autowired
     private lateinit var repository: StudentRepository
     @Autowired
     private lateinit var mapper: Mapper
@@ -32,9 +30,11 @@ class StudentServiceImpl : StudentService {
     private lateinit var passwordEncoder: PasswordEncoder
     @Autowired
     private lateinit var jwtService: JwtService
+    @Autowired
+    private lateinit var verify: VerifyIfUserIsAlreadyRegistered
 
     override fun save(request: UserRequest): StudentResponse {
-        verifyIfAlreadyRegistered(request.socialSecurityNumber)
+        verify.verify(request)
         val entitySave = mapper.map(request, StudentEntity::class.java)
         entitySave.role = Role.STUDENT
         entitySave.pw = passwordEncoder.encode(entitySave.pw)
@@ -58,14 +58,5 @@ class StudentServiceImpl : StudentService {
         var studentEntity = repository.findBySocialSecurityNumber(ssNumber)
             .orElseThrow { NotFoundException("The student with the social security number: $ssNumber does not exists!") }
         repository.delete(studentEntity)
-    }
-
-    private fun verifyIfAlreadyRegistered(socialSecurityNumber: Int?) {
-        if (managerRepository.findBySocialSecurityNumber(socialSecurityNumber!!).isPresent)
-            throw UserRegisteredException("The user is already registered as admin/moderator")
-        if (repository.findBySocialSecurityNumber(socialSecurityNumber).isPresent)
-            throw UserRegisteredException("The student is already registered")
-        if (teacherRepository.findBySocialSecurityNumber(socialSecurityNumber).isPresent )
-            throw UserRegisteredException("The user is already registered as teacher")
     }
 }
