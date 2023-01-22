@@ -1,6 +1,7 @@
 package ar.com.school.management.service.impl
 
 import ar.com.school.management.config.security.JwtService
+import ar.com.school.management.exception.InvalidPasswordException
 import ar.com.school.management.exception.InvalidRoleException
 import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.exception.UserRegisteredException
@@ -50,13 +51,15 @@ class ManagementServiceImpl: ManagementService {
     }
 
     override fun authenticate(request: AuthenticationRequest): AuthenticationResponse {
+        val user = managerRepository.findByEmail(request.email).orElseThrow{ NotFoundException("User Not Found") }
+        if (!passwordEncoder.matches(request.pw, user.pw))
+            throw InvalidPasswordException("The email or password is incorrect")
         authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(
                 request.email,
                 request.pw
             )
         )
-        val user = managerRepository.findByEmail(request.email).orElseThrow{ NotFoundException("User Not Found") }
         val jwtToken = jwtService.generateToken(user)
         return AuthenticationResponse(jwtToken)
     }
