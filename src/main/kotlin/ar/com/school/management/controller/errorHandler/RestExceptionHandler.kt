@@ -1,9 +1,6 @@
 package ar.com.school.management.controller.errorHandler
 
-import ar.com.school.management.exception.CareerRegisteredException
-import ar.com.school.management.exception.InvalidRoleException
-import ar.com.school.management.exception.NotFoundException
-import ar.com.school.management.exception.UserRegisteredException
+import ar.com.school.management.exception.*
 import ar.com.school.management.models.response.ApiErrorResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -57,15 +54,15 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         )
         return handleExceptionInternal(ex, error, HttpHeaders(), HttpStatus.BAD_REQUEST, request)
     }
-    /*@ExceptionHandler(value = [AuthenticationException::class])
-    fun handleAuthenticationException(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
+    @ExceptionHandler(value = [InvalidPasswordException::class])
+    fun handleInvalidPassword(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
         val error = ApiErrorResponse(
-            HttpStatus.FORBIDDEN,
-            "eAccess denied",
-            listOf("You dont have enough permissions to use this functionality")
+            HttpStatus.BAD_REQUEST,
+            ex.message,
+            listOf("Please verify your email and password")
         )
-        return handleExceptionInternal(ex, error, HttpHeaders(), HttpStatus.CONFLICT, request)
-    }*/
+        return handleExceptionInternal(ex, error, HttpHeaders(), HttpStatus.BAD_REQUEST, request)
+    }
 
     override fun handleMethodArgumentNotValid(
         ex: MethodArgumentNotValidException,
