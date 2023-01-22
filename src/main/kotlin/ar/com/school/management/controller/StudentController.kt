@@ -5,6 +5,7 @@ import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.ApiErrorResponse
 import ar.com.school.management.models.response.AuthenticationResponse
 import ar.com.school.management.models.response.StudentResponse
+import ar.com.school.management.models.response.SubjectInfoResponseForStudent
 import ar.com.school.management.service.StudentService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -52,7 +53,7 @@ class StudentController {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Student found successfully!"),
-            ApiResponse(responseCode = "404", description = "The ID does not belong to any student!",
+            ApiResponse(responseCode = "404", description = "The ssN does not belong to any student!",
                 content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )
@@ -71,6 +72,21 @@ class StudentController {
     )
     @GetMapping
     fun getStudents(): ResponseEntity<List<StudentResponse>> = ResponseEntity.ok(studentService.getAllStudents())
+
+    @Operation(
+        summary = "Get student subject status",
+        description = "This feature lets students to get the information from a subject that he/she has."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Student found successfully!"),
+            ApiResponse(responseCode = "404", description = "The Ssn or ID does not belong to any student or subject!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @GetMapping("/{ssNumber}/{id}")
+    fun getSubjectStatus(@PathVariable ssNumber: Int, @PathVariable id: Long): ResponseEntity<SubjectInfoResponseForStudent> =
+        ResponseEntity.ok(studentService.getSubjectStatus(ssNumber, id))
 
     @Operation(
         summary = "Updates a student",
@@ -113,7 +129,7 @@ class StudentController {
                 content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )
-    @PostMapping("/authenticate")
-    fun authenticate(@RequestBody authenticate: AuthenticationRequest): ResponseEntity<AuthenticationResponse> =
-        ResponseEntity.ok(studentService.authenticate(authenticate))
+    @PostMapping("/logIn")
+    fun logIn(@RequestBody authenticate: AuthenticationRequest): ResponseEntity<AuthenticationResponse> =
+        ResponseEntity.ok(studentService.logIn(authenticate))
 }

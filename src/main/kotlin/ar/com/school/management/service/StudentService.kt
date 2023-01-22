@@ -4,6 +4,7 @@ import ar.com.school.management.models.request.AuthenticationRequest
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.AuthenticationResponse
 import ar.com.school.management.models.response.StudentResponse
+import ar.com.school.management.models.response.SubjectInfoResponseForStudent
 import org.springframework.http.ResponseEntity
 
 interface StudentService {
@@ -12,5 +13,6 @@ interface StudentService {
     fun getAllStudents(): List<StudentResponse>
     fun updateStudent(ssNumber: Int, request: UserRequest): StudentResponse
     fun deleteStudent(ssNumber: Int)
-    fun authenticate(request: AuthenticationRequest): AuthenticationResponse
+    fun logIn(request: AuthenticationRequest): AuthenticationResponse
+    fun getSubjectStatus(ssNumber: Int, id: Long): SubjectInfoResponseForStudent
 }
