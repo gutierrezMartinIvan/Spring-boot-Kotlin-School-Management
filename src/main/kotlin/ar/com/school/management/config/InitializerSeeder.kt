@@ -57,17 +57,17 @@ class InitializerSeeder: CommandLineRunner {
     private fun createTeachers() {
         teacherService.save(UserRequest(165878891, "Isabella", "Thompson", 55888999, "isabellathompson@email.com","p@ssw0rd16" ))
         teacherService.save(UserRequest(177999101, "Ethan", "Garcia", 559999000, "ethangarcia@email.com","p@ssw0rd17" ))
-        teacherService.save(UserRequest(189100111, "Aria", "Martinez", 555112222, "ariamartinez@email.com","p@ssw0rd18" ))
+        teacherService.save(UserRequest(189100111, "Aria", "Martinez", 55518222, "ariamartinez@email.com","p@ssw0rd18" ))
         teacherService.save(UserRequest(190211121, "Noah", "Robinson", 52223333, "noahrobinson@email.com","p@ssw0rd19" ))
         teacherService.save(UserRequest(201321231, "Lily", "Clark", 555333444, "lilyclark@email.com","p@ssw0rd20" ))
     }
 
     private fun createStudents() {
         studentService.save(UserRequest(111223341, "Emily", "Thomas", 553334444, "emilythomas@email.com","p@ssw0rd11" ))
-        studentService.save(UserRequest(122334451, "Madison", "Jackson", 554445555, "madisonjackson@email.com","p@ssw0rd12" ))
+        studentService.save(UserRequest(122334451, "Madison", "Jackson", 55444555, "madisonjackson@email.com","p@ssw0rd12" ))
         studentService.save(UserRequest(132445561, "Matthew", "White", 55555666, "matthewwhite@email.com","p@ssw0rd13" ))
-        studentService.save(UserRequest(143556671, "Olivia", "Harris", 555667777, "oliviaharris@email.com","p@ssw0rd14" ))
-        studentService.save(UserRequest(154767781, "Jacob", "Martin", 557777888, "jacobmartin@email.com","p@ssw0rd15" ))
+        studentService.save(UserRequest(143556671, "Olivia", "Harris", 55566777, "oliviaharris@email.com","p@ssw0rd14" ))
+        studentService.save(UserRequest(154767781, "Jacob", "Martin", 55777788, "jacobmartin@email.com","p@ssw0rd15" ))
     }
 
     private fun createModerators() {
