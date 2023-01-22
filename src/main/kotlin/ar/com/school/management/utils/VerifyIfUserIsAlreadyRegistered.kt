@@ -12,12 +12,11 @@ import org.springframework.stereotype.Component
 class VerifyIfUserIsAlreadyRegistered {
     @Autowired
     private lateinit var managerRepository: ManagerRepository
-
     @Autowired
     private lateinit var teacherRepository: TeacherRepository
-
     @Autowired
     private lateinit var studentRepository: StudentRepository
+
     fun verify(request: UserRequest) {
         verifyEmail(request.email!!)
         verifyPhone(request.phone!!)
