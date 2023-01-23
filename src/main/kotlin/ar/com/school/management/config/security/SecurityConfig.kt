@@ -38,7 +38,7 @@ class SecurityConfig {
 
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.PATCH,"/student/{ssNumber}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.DELETE, "/student/{ssNumber}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
-            .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/student/{ssNumber}/{id}").hasAuthority(Role.STUDENT.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/student/{subjectId}").hasAuthority(Role.STUDENT.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/student").authenticated()
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/student/{ssNumber}").authenticated()
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST ,"/student", "/student/logIn").permitAll()
