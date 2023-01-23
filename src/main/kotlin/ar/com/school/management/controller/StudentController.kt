@@ -57,7 +57,7 @@ class StudentController {
                 content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )
-    @GetMapping("/{ssNumber}")
+    @GetMapping("/get/{ssNumber}")
     fun getStudentBySocialSecurityNumber(@PathVariable ssNumber: Int): ResponseEntity<StudentResponse> =
         ResponseEntity.ok(studentService.getStudentBySocialSecurityNumber(ssNumber))
 
@@ -84,9 +84,9 @@ class StudentController {
                 content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )
-    @GetMapping("/{ssNumber}/{id}")
-    fun getSubjectStatus(@PathVariable ssNumber: Int, @PathVariable id: Long): ResponseEntity<SubjectInfoResponseForStudent> =
-        ResponseEntity.ok(studentService.getSubjectStatus(ssNumber, id))
+    @GetMapping("/{subjectId}")
+    fun getSubjectStatus(@PathVariable subjectId: Long): ResponseEntity<SubjectInfoResponseForStudent> =
+        ResponseEntity.ok(studentService.getSubjectStatus(subjectId))
 
     @Operation(
         summary = "Updates a student",
