@@ -35,8 +35,6 @@ class SubjectServiceImpl: SubjectService {
     override fun addStudent2Subject(id: Long, ssn: Int): Any {
         val subjectEntity = repository.findById(id).orElseThrow{ NotFoundException("Subject not found with ID: $id") }
         val studentEntity = studentRepository.findBySocialSecurityNumber(ssn).orElseThrow{ NotFoundException("Student not found with SSN: $ssn") }
-        subjectEntity.mark = Mark.ZERO
-        subjectEntity.state = State.ONGOING
         subjectEntity.students?.add(studentEntity)
         studentEntity.subjects?.add(subjectEntity)
         repository.save(subjectEntity)
