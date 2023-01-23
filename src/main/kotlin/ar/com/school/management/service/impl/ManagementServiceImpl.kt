@@ -76,14 +76,14 @@ class ManagementServiceImpl: ManagementService {
         }
 
     override fun updateUser(ssNumber: Int, request: UserRequest): UserResponse {
-        var userEntity = managerRepository.findBySocialSecurityNumber(ssNumber)
+        val userEntity = managerRepository.findBySocialSecurityNumber(ssNumber)
             .orElseThrow { NotFoundException("The admin with the social security number: $ssNumber does not exists!") }
         mapper.updateUser(userEntity, request)
         return mapper.map(managerRepository.save(userEntity), UserResponse::class.java)
     }
 
     override fun deleteModerator(ssNumber: Int) {
-        var userEntity = managerRepository.findBySocialSecurityNumber(ssNumber)
+        val userEntity = managerRepository.findBySocialSecurityNumber(ssNumber)
             .orElseThrow { NotFoundException("The admin with the social security number: $ssNumber does not exists!") }
         managerRepository.delete(userEntity)
     }
