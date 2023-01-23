@@ -21,8 +21,15 @@ class Mapper {
             is TeacherResponse -> fixNullTeacherResponse(destination)
             is CareerResponse -> fixNullCareerResponse(destination)
             is StudentResponse -> fixNullStudentResponse(destination)
+            is SubjectInfoResponseForStudent -> fixNullSubjectInfoResponseForStudent(destination)
             else -> destination
 
+    }
+
+    private fun <D> fixNullSubjectInfoResponseForStudent(destination: SubjectInfoResponseForStudent): D {
+        destination.mark = destination.mark ?: Mark.PENDING
+        destination.state = destination.state ?: State.PENDING
+        return destination as D
     }
 
     fun <S, D> mapLists(sources: List<S>, destinationType: Class<D>): List<D> = sources.map { source -> map(source, destinationType) }
