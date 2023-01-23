@@ -1,6 +1,7 @@
 package ar.com.school.management.service.impl
 
 import ar.com.school.management.config.security.JwtService
+import ar.com.school.management.exception.InvalidPasswordException
 import ar.com.school.management.exception.NotFoundException
 import ar.com.school.management.models.entity.StudentEntity
 import ar.com.school.management.models.request.AuthenticationRequest
@@ -19,6 +20,8 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 
 @Service
 class StudentServiceImpl : StudentService {
@@ -52,20 +55,22 @@ class StudentServiceImpl : StudentService {
 
     override fun getAllStudents(): List<StudentResponse> = mapper.mapLists(studentRepository.findAll(), StudentResponse::class.java)
     override fun updateStudent(ssNumber: Int, request: UserRequest): StudentResponse {
-        var studentEntity = studentRepository.findBySocialSecurityNumber(ssNumber)
+        val studentEntity = studentRepository.findBySocialSecurityNumber(ssNumber)
             .orElseThrow { NotFoundException("The student with the social security number: $ssNumber does not exists!") }
         mapper.updateUser(studentEntity, request)
         return mapper.map(studentRepository.save(studentEntity), StudentResponse::class.java)
     }
 
     override fun deleteStudent(ssNumber: Int) {
-        var studentEntity = studentRepository.findBySocialSecurityNumber(ssNumber)
+        val studentEntity = studentRepository.findBySocialSecurityNumber(ssNumber)
             .orElseThrow { NotFoundException("The student with the social security number: $ssNumber does not exists!") }
         studentRepository.delete(studentEntity)
     }
 
     override fun logIn(request: AuthenticationRequest): AuthenticationResponse {
         val studentEntity = studentRepository.findByEmail(request.email).orElseThrow{ NotFoundException("Student Not Found") }
+        if (!passwordEncoder.matches(request.pw, studentEntity.pw))
+            throw InvalidPasswordException("The email or password is incorrect")
         authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(
                 request.email,
@@ -76,9 +81,11 @@ class StudentServiceImpl : StudentService {
         return AuthenticationResponse(jwtToken)
     }
 
-    override fun getSubjectStatus(ssNumber: Int, id: Long): SubjectInfoResponseForStudent {
-        val studentEntity = studentRepository.findBySocialSecurityNumber(ssNumber).orElseThrow { NotFoundException("Student with SSN: $ssNumber not found") }
-        val subjectEntity = subjectRepository.findById(id).orElseThrow { NotFoundException("Subject with ID: $id not found") }
+    override fun getSubjectStatus(subjectId: Long): SubjectInfoResponseForStudent {
+        val request = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
+        val email  = jwtService.extractUsername(request.getHeader("Authorization").substring(7))
+        val studentEntity = studentRepository.findByEmail(email).orElseThrow { NotFoundException("Student with email: $email not found") }
+        val subjectEntity = subjectRepository.findById(subjectId).orElseThrow { NotFoundException("Subject with ID: $subjectId not found") }
         if (!studentEntity.subjects!!.contains(subjectEntity) || studentEntity.subjects!!.isEmpty())
             throw NotFoundException("The student ${studentEntity.name} does not have the subject ${subjectEntity.name}")
         var subjectResponse = SubjectInfoResponseForStudent()
