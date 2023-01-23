@@ -5,8 +5,10 @@ import ar.com.school.management.utils.State
 import jakarta.persistence.*
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
+import org.springframework.context.annotation.Scope
 
 @Entity
+@Scope("prototype")
 @Table(name = "subjects")
 @SQLDelete(sql = "UPDATE subjects SET deleted = true Where id=?")
 @Where(clause = "deleted=false")
