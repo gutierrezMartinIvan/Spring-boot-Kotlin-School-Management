@@ -50,7 +50,8 @@ class SecurityConfig {
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/career/{id}").authenticated()
 
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
-            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject/{id}/{ssn}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name, Role.TEACHER.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject/{id}/{teacherSsn}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject/{id}/{studentSsn}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name, Role.TEACHER.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/subject/{id}").authenticated()
 
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/teacher").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
