@@ -14,5 +14,5 @@ interface StudentService {
     fun updateStudent(ssNumber: Int, request: UserRequest): StudentResponse
     fun deleteStudent(ssNumber: Int)
     fun logIn(request: AuthenticationRequest): AuthenticationResponse
-    fun getSubjectStatus(ssNumber: Int, id: Long): SubjectInfoResponseForStudent
+    fun getSubjectStatus(id: Long): SubjectInfoResponseForStudent
 }
