@@ -2,10 +2,7 @@ package ar.com.school.management.controller
 
 import ar.com.school.management.models.request.AuthenticationRequest
 import ar.com.school.management.models.request.UserRequest
-import ar.com.school.management.models.response.ApiErrorResponse
-import ar.com.school.management.models.response.AuthenticationResponse
-import ar.com.school.management.models.response.StudentResponse
-import ar.com.school.management.models.response.SubjectInfoResponseForStudent
+import ar.com.school.management.models.response.*
 import ar.com.school.management.service.StudentService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -85,7 +82,7 @@ class StudentController {
         ]
     )
     @GetMapping("/{subjectId}")
-    fun getSubjectStatus(@PathVariable subjectId: Long): ResponseEntity<SubjectInfoResponseForStudent> =
+    fun getSubjectStatus(@PathVariable subjectId: Long): ResponseEntity<StudentSubjectResponse> =
         ResponseEntity.ok(studentService.getSubjectStatus(subjectId))
 
     @Operation(
