@@ -2,7 +2,6 @@ package ar.com.school.management.models.entity
 
 import ar.com.school.management.utils.Role
 import jakarta.persistence.*
-import jakarta.validation.constraints.Email
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
 
