@@ -1,28 +1,21 @@
 package ar.com.school.management.models.entity
 
-import ar.com.school.management.utils.Mark
-import ar.com.school.management.utils.State
 import jakarta.persistence.*
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
-import org.springframework.context.annotation.Scope
 
 @Entity
-@Scope("prototype")
 @Table(name = "subjects")
 @SQLDelete(sql = "UPDATE subjects SET deleted = true Where id=?")
 @Where(clause = "deleted=false")
 class SubjectEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "career_id")
+    @Column(name = "subject_id")
     var id: Long?,
 
     @Column(nullable = false)
-    var name: String,
-
-    var state: State,
-    var mark: Mark,
+    var name: String?,
 
     @ManyToMany
     @JoinTable(
@@ -32,11 +25,16 @@ class SubjectEntity(
     )
     var students: MutableList<StudentEntity>?,
 
+    @OneToMany(mappedBy = "subject", cascade = [CascadeType.ALL])
+    var studentSubjects: MutableList<StudentSubjectEntity>?,
+
     @ManyToMany(mappedBy = "subjects")
     var teachers: MutableList<TeacherEntity>?,
 
     @ManyToMany(mappedBy = "subjects")
     var careers: MutableList<CareerEntity>?,
 
-    var deleted: Boolean = false
-)
+    var deleted: Boolean? = false
+) {
+    constructor(): this(null, null, null, null, null, null, false)
+}
