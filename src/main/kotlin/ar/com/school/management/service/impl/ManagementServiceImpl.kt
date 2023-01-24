@@ -4,14 +4,11 @@ import ar.com.school.management.config.security.JwtService
 import ar.com.school.management.exception.InvalidPasswordException
 import ar.com.school.management.exception.InvalidRoleException
 import ar.com.school.management.exception.NotFoundException
-import ar.com.school.management.exception.UserRegisteredException
 import ar.com.school.management.models.entity.ManagerEntity
 import ar.com.school.management.models.request.AuthenticationRequest
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.AuthenticationResponse
 import ar.com.school.management.models.response.UserResponse
-import ar.com.school.management.repository.StudentRepository
-import ar.com.school.management.repository.TeacherRepository
 import ar.com.school.management.repository.ManagerRepository
 import ar.com.school.management.service.ManagementService
 import ar.com.school.management.utils.Mapper
