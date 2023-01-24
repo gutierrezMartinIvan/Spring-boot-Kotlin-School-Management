@@ -10,4 +10,5 @@ interface SubjectService {
     fun getSubjectById(id: Long): SubjectResponse
     fun addStudent2Subject(id: Long, studentSnn: Int): StudentResponse
     fun addTeacher2Subject(id: Long, teacherSsn: Int): TeacherResponse
+    fun getAll(): List<SubjectResponse>
 }
