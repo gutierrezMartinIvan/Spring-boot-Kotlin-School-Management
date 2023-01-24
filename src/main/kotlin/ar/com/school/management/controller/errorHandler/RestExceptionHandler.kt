@@ -15,12 +15,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 class RestExceptionHandler : ResponseEntityExceptionHandler() {
 
-    @ExceptionHandler(value = [UserRegisteredException::class])
+    @ExceptionHandler(value = [AlreadyRegisteredException::class])
     fun handleUserAlreadyRegistered(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
         val error = ApiErrorResponse(
             HttpStatus.CONFLICT,
             ex.message,
-            listOf("User Already Registered!")
+            listOf("Already Registered!")
         )
         return handleExceptionInternal(ex, error, HttpHeaders(), HttpStatus.CONFLICT, request)
     }
