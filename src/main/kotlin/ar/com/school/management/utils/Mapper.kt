@@ -1,5 +1,6 @@
 package ar.com.school.management.utils
 
+import ar.com.school.management.models.entity.StudentSubjectEntity
 import ar.com.school.management.models.entity.User
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.*
@@ -21,14 +22,15 @@ class Mapper {
             is TeacherResponse -> fixNullTeacherResponse(destination)
             is CareerResponse -> fixNullCareerResponse(destination)
             is StudentResponse -> fixNullStudentResponse(destination)
-            is SubjectInfoResponseForStudent -> fixNullSubjectInfoResponseForStudent(destination)
+            is StudentSubjectResponse -> fixAttributes(source, destination)
             else -> destination
 
     }
 
-    private fun <D> fixNullSubjectInfoResponseForStudent(destination: SubjectInfoResponseForStudent): D {
-        destination.mark = destination.mark ?: Mark.PENDING
-        destination.state = destination.state ?: State.PENDING
+    private fun <S, D> fixAttributes(source: S, destination: StudentSubjectResponse): D {
+        var entity = source as StudentSubjectEntity
+        destination.studentName = entity.student!!.name
+        destination.subjectName = entity.subject!!.name
         return destination as D
     }
 
