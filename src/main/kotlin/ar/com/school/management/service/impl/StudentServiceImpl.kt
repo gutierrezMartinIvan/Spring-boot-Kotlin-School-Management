@@ -8,10 +8,11 @@ import ar.com.school.management.models.request.AuthenticationRequest
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.AuthenticationResponse
 import ar.com.school.management.models.response.StudentResponse
-import ar.com.school.management.models.response.SubjectInfoResponseForStudent
+import ar.com.school.management.models.response.StudentSubjectResponse
 import ar.com.school.management.repository.StudentRepository
 import ar.com.school.management.repository.SubjectRepository
 import ar.com.school.management.service.StudentService
+import ar.com.school.management.service.StudentSubjectService
 import ar.com.school.management.utils.Mapper
 import ar.com.school.management.utils.Role
 import ar.com.school.management.utils.VerifyIfUserIsAlreadyRegistered
@@ -27,6 +28,8 @@ import org.springframework.web.context.request.ServletRequestAttributes
 class StudentServiceImpl : StudentService {
     @Autowired
     private lateinit var studentRepository: StudentRepository
+    @Autowired
+    private lateinit var studentSubjectService: StudentSubjectService
     @Autowired
     private lateinit var subjectRepository: SubjectRepository
     @Autowired
@@ -81,18 +84,11 @@ class StudentServiceImpl : StudentService {
         return AuthenticationResponse(jwtToken)
     }
 
-    override fun getSubjectStatus(subjectId: Long): SubjectInfoResponseForStudent {
+    override fun getSubjectStatus(subjectId: Long): StudentSubjectResponse {
         val request = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
         val email  = jwtService.extractUsername(request.getHeader("Authorization").substring(7))
-        val studentEntity = studentRepository.findByEmail(email).orElseThrow { NotFoundException("Student with email: $email not found") }
-        val subjectEntity = subjectRepository.findById(subjectId).orElseThrow { NotFoundException("Subject with ID: $subjectId not found") }
-        if (!studentEntity.subjects!!.contains(subjectEntity) || studentEntity.subjects!!.isEmpty())
-            throw NotFoundException("The student ${studentEntity.name} does not have the subject ${subjectEntity.name}")
-        var subjectResponse = SubjectInfoResponseForStudent()
-        for (subject in studentEntity.subjects!!){
-            if (subject.name == subjectEntity.name)
-                subjectResponse = mapper.map(subject, SubjectInfoResponseForStudent::class.java)
-        }
-        return subjectResponse
+        val studentEntity = studentRepository.findByEmail(email).orElseThrow { NotFoundException("No student found with email: $email") }
+        val subjectEntity = subjectRepository.findById(subjectId).orElseThrow { NotFoundException("No subject found with ID: $subjectId") }
+        return studentSubjectService.getBySubjectAndStudent(subjectEntity, studentEntity)
     }
 }
