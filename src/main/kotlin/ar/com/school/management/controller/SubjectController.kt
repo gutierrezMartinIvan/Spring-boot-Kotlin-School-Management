@@ -60,6 +60,10 @@ class SubjectController {
     fun getSubjectById(@PathVariable id: Long): ResponseEntity<SubjectResponse> =
         ResponseEntity.status(HttpStatus.OK).body(subjectService.getSubjectById(id))
 
+    @GetMapping
+    fun getAllSubjects(): ResponseEntity<List<SubjectResponse>> =
+        ResponseEntity.ok(subjectService.getAll())
+
     @Operation(
         summary = "add a student to a subject",
         description = "This feature lets admins, moderators and teachers be able to register a student to a subject."
@@ -87,6 +91,6 @@ class SubjectController {
         ]
     )
     @Transactional
-    @PostMapping("/{id}/{teacherSsn}")
-    fun addTeacherToSubject(@PathVariable id: Long, @PathVariable teacherSsn: Int): ResponseEntity<TeacherResponse> = ResponseEntity.ok().body(subjectService.addTeacher2Subject(id, teacherSsn))
+    @PostMapping("/teacher/{teacherSsn}/subject/{id}")
+    fun addTeacherToSubject(@PathVariable teacherSsn: Int, @PathVariable id: Long): ResponseEntity<TeacherResponse> = ResponseEntity.ok().body(subjectService.addTeacher2Subject(id, teacherSsn))
 }
