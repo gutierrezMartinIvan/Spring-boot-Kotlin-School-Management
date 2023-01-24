@@ -2,12 +2,8 @@ package ar.com.school.management.models.entity
 
 import ar.com.school.management.utils.Role
 import jakarta.persistence.*
-import jakarta.validation.constraints.Email
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
 @Table(name = "students")
@@ -29,6 +25,9 @@ class StudentEntity(
 
     @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
     var subjects: MutableList<SubjectEntity>?,
+
+    @OneToMany(mappedBy = "student", cascade = [CascadeType.ALL])
+    var studentSubjects: MutableList<StudentSubjectEntity>?,
 
     var deleted: Boolean = false
 
