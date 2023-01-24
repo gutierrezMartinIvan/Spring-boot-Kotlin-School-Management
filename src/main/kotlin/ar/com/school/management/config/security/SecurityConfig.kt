@@ -49,11 +49,13 @@ class SecurityConfig {
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/career").authenticated()
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/career/{id}").authenticated()
 
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject/{id}/{studentSsn}").hasAnyAuthority(Role.TEACHER.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject/teacher/{teacherSsn}/subject/{id}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
-            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject/{id}/{teacherSsn}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
-            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject/{id}/{studentSsn}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name, Role.TEACHER.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/subject/{id}").authenticated()
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/subject").authenticated()
 
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/teacher/setMark").hasAnyAuthority(Role.TEACHER.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/teacher").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.PATCH, "/teacher/{ssNumber}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.DELETE, "/teacher/{ssNumber}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
@@ -73,8 +75,10 @@ class SecurityConfig {
                     ApiErrorResponse(
                         HttpStatus.FORBIDDEN,
                         "Access denied",
-                        arrayListOf("You dont have enough permissions to use this functionality")))
-                    .toString())
+                        arrayListOf("You dont have enough permissions to use this functionality",
+                            "Please LogIn and try again")
+                    )
+                ).toString())
         }
         return http.build()
     }
