@@ -2,7 +2,7 @@ package ar.com.school.management.service.impl
 
 import ar.com.school.management.exception.CareerRegisteredException
 import ar.com.school.management.exception.NotFoundException
-import ar.com.school.management.exception.UserRegisteredException
+import ar.com.school.management.exception.AlreadyRegisteredException
 import ar.com.school.management.models.entity.CareerEntity
 import ar.com.school.management.models.request.CareerRequest
 import ar.com.school.management.models.response.CareerResponse
@@ -44,8 +44,8 @@ class CareerServiceImpl: CareerService {
            .orElseThrow {NotFoundException("The ssNumber: $studentSsN does not belong to any student registered")}
        var careerEntity = repository.findById(careerId)
            .orElseThrow { NotFoundException("The career id: $careerId does not belong to any career registered")  }
-       if (careerEntity.students!!.contains(studentEntity))
-           throw UserRegisteredException("The student is already signed up in this career")
+       if (studentEntity.career != null)
+           throw AlreadyRegisteredException("The student is already signed up in a career")
 
        careerEntity.students!!.add(studentEntity)
        repository.save(careerEntity)
@@ -54,12 +54,12 @@ class CareerServiceImpl: CareerService {
     }
 
     override fun addSubject2Career(careerId: Long, subjectId: Long): CareerResponse {
-        var subjectEntity = subjectRepository.findById(subjectId)
-            .orElseThrow {NotFoundException("The ssNumber: $subjectId does not belong to any student registered")}
-        var careerEntity = repository.findById(careerId)
+        val subjectEntity = subjectRepository.findById(subjectId)
+            .orElseThrow {NotFoundException("The ID: $subjectId does not belong to any subject registered")}
+        val careerEntity = repository.findById(careerId)
             .orElseThrow { NotFoundException("The career id: $careerId does not belong to any career registered")  }
         if (careerEntity.subjects!!.contains(subjectEntity))
-            throw UserRegisteredException("The student is already signed up in this career")
+            throw AlreadyRegisteredException("The career ${careerEntity.name} already has the subject: ${subjectEntity.name}")
 
         careerEntity.subjects!!.add(subjectEntity)
         subjectEntity.careers!!.add(careerEntity)

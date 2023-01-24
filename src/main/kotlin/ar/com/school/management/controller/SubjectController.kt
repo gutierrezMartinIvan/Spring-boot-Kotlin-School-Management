@@ -2,7 +2,9 @@ package ar.com.school.management.controller
 
 import ar.com.school.management.models.request.SubjectRequest
 import ar.com.school.management.models.response.ApiErrorResponse
+import ar.com.school.management.models.response.StudentResponse
 import ar.com.school.management.models.response.SubjectResponse
+import ar.com.school.management.models.response.TeacherResponse
 import ar.com.school.management.service.SubjectService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -57,4 +59,38 @@ class SubjectController {
     @GetMapping("/{id}")
     fun getSubjectById(@PathVariable id: Long): ResponseEntity<SubjectResponse> =
         ResponseEntity.status(HttpStatus.OK).body(subjectService.getSubjectById(id))
+
+    @GetMapping
+    fun getAllSubjects(): ResponseEntity<List<SubjectResponse>> =
+        ResponseEntity.ok(subjectService.getAll())
+
+    @Operation(
+        summary = "add a student to a subject",
+        description = "This feature lets admins, moderators and teachers be able to register a student to a subject."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Student added correctly!"),
+            ApiResponse(responseCode = "404", description = "Student or career not found!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @Transactional
+    @PostMapping("/{id}/{studentSsn}")
+    fun addStudentToSubject(@PathVariable id: Long, @PathVariable studentSsn: Int): ResponseEntity<StudentResponse> = ResponseEntity.ok().body(subjectService.addStudent2Subject(id, studentSsn))
+
+    @Operation(
+        summary = "Add a teacher to a subject",
+        description = "This feature lets admins, moderators and teachers be able to register a teacher to a subject."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Teacher added correctly!"),
+            ApiResponse(responseCode = "404", description = "Teacher or career not found!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @Transactional
+    @PostMapping("/teacher/{teacherSsn}/subject/{id}")
+    fun addTeacherToSubject(@PathVariable teacherSsn: Int, @PathVariable id: Long): ResponseEntity<TeacherResponse> = ResponseEntity.ok().body(subjectService.addTeacher2Subject(id, teacherSsn))
 }

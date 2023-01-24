@@ -1,5 +1,6 @@
 package ar.com.school.management.utils
 
+import ar.com.school.management.models.entity.StudentSubjectEntity
 import ar.com.school.management.models.entity.User
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.models.response.*
@@ -21,8 +22,16 @@ class Mapper {
             is TeacherResponse -> fixNullTeacherResponse(destination)
             is CareerResponse -> fixNullCareerResponse(destination)
             is StudentResponse -> fixNullStudentResponse(destination)
+            is StudentSubjectResponse -> fixAttributes(source, destination)
             else -> destination
 
+    }
+
+    private fun <S, D> fixAttributes(source: S, destination: StudentSubjectResponse): D {
+        var entity = source as StudentSubjectEntity
+        destination.studentName = entity.student!!.name
+        destination.subjectName = entity.subject!!.name
+        return destination as D
     }
 
     fun <S, D> mapLists(sources: List<S>, destinationType: Class<D>): List<D> = sources.map { source -> map(source, destinationType) }
@@ -63,7 +72,4 @@ class Mapper {
         if (updatedRequest.pw != null)
             entity2Update.pw = passwordEncoder.encode(updatedRequest.pw)
     }
-
-
-    //fun <S, D>update(source: S, update: Class<D>): D = map()
 }

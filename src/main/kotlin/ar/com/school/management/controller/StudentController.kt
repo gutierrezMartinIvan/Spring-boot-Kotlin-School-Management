@@ -1,8 +1,8 @@
 package ar.com.school.management.controller
 
+import ar.com.school.management.models.request.AuthenticationRequest
 import ar.com.school.management.models.request.UserRequest
-import ar.com.school.management.models.response.ApiErrorResponse
-import ar.com.school.management.models.response.StudentResponse
+import ar.com.school.management.models.response.*
 import ar.com.school.management.service.StudentService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -50,11 +50,11 @@ class StudentController {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Student found successfully!"),
-            ApiResponse(responseCode = "404", description = "The ID does not belong to any student!",
+            ApiResponse(responseCode = "404", description = "The ssN does not belong to any student!",
                 content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
         ]
     )
-    @GetMapping("/{ssNumber}")
+    @GetMapping("/get/{ssNumber}")
     fun getStudentBySocialSecurityNumber(@PathVariable ssNumber: Int): ResponseEntity<StudentResponse> =
         ResponseEntity.ok(studentService.getStudentBySocialSecurityNumber(ssNumber))
 
@@ -71,8 +71,23 @@ class StudentController {
     fun getStudents(): ResponseEntity<List<StudentResponse>> = ResponseEntity.ok(studentService.getAllStudents())
 
     @Operation(
+        summary = "Get student subject status",
+        description = "This feature lets students to get the information from a subject that he/she has."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Student found successfully!"),
+            ApiResponse(responseCode = "404", description = "The Ssn or ID does not belong to any student or subject!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @GetMapping("/{subjectId}")
+    fun getSubjectStatus(@PathVariable subjectId: Long): ResponseEntity<StudentSubjectResponse> =
+        ResponseEntity.ok(studentService.getSubjectStatus(subjectId))
+
+    @Operation(
         summary = "Updates a student",
-        description = "This feature lets admins,moderators or the student itself to update student info."
+        description = "This feature lets admins and moderators to update student info."
     )
     @ApiResponses(value = [
         ApiResponse(responseCode = "200", description = "Student updated successfully!") ,
@@ -84,4 +99,34 @@ class StudentController {
     @PatchMapping("/{ssNumber}")
     fun updateStudent(@PathVariable ssNumber: Int, @RequestBody request: UserRequest): ResponseEntity<StudentResponse> =
         ResponseEntity.ok(studentService.updateStudent(ssNumber, request))
+
+    @Operation(
+        summary = "Delete a student",
+        description = "This feature lets admins and moderator delete a student."
+    )
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "Student deleted successfully!") ,
+        ApiResponse(responseCode = "404", description = "The ID does not belong to any student!",
+            content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+    ]
+    )
+    @Transactional
+    @DeleteMapping("/{ssNumber}")
+    fun deleteStudent(@PathVariable ssNumber: Int): Unit =
+        studentService.deleteStudent(ssNumber)
+
+    @Operation(
+        summary = "Authenticate.",
+        description = "This feature lets a student log in."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Authenticated successfully!"),
+            ApiResponse(responseCode = "404", description = "The email does not belong to any student!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @PostMapping("/logIn")
+    fun logIn(@RequestBody authenticate: AuthenticationRequest): ResponseEntity<AuthenticationResponse> =
+        ResponseEntity.ok(studentService.logIn(authenticate))
 }

@@ -7,7 +7,8 @@ import java.util.*
 import kotlin.collections.List
 
 interface ManagerRepository: JpaRepository<ManagerEntity, Long> {
-    fun findBySocialSecurityNumber(socialSecurityNumber: Int): Optional<ManagerEntity>
+    fun findByPhone(phone: Int): Optional<ManagerEntity>
     fun findByEmail(email: String): Optional<ManagerEntity>
     fun findAllByRole(role: Role): List<ManagerEntity>
+    fun findBySocialSecurityNumber(ssNumber: Int): Optional<ManagerEntity>
 }

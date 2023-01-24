@@ -37,22 +37,31 @@ class SecurityConfig {
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/auth/authenticate", "/auth/register").permitAll()
 
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.PATCH,"/student/{ssNumber}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.DELETE, "/student/{ssNumber}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/student/{subjectId}").hasAuthority(Role.STUDENT.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/student").authenticated()
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/student/{ssNumber}").authenticated()
-            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST ,"/student").permitAll()
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST ,"/student", "/student/logIn").permitAll()
 
-            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/career").hasAnyAuthority(Role.STUDENT.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/career").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.PUT, "/career/{careerId}/add-student/{studentSsN}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.PUT, "/career/{careerId}/add-subject/{subjectId}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/career").authenticated()
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/career/{id}").authenticated()
 
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject/{id}/{studentSsn}").hasAnyAuthority(Role.TEACHER.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject/teacher/{teacherSsn}/subject/{id}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/subject").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/subject/{id}").authenticated()
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/subject").authenticated()
 
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/teacher/setMark").hasAnyAuthority(Role.TEACHER.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/teacher").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.PATCH, "/teacher/{ssNumber}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.DELETE, "/teacher/{ssNumber}").hasAnyAuthority(Role.ADMIN.name, Role.MODERATOR.name)
             .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/teacher/{ssNumber}").authenticated()
-
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.GET,"/teacher").authenticated()
+            .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/teacher/authenticate").permitAll()
 
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().authenticationProvider(authenticationProvider)
@@ -66,8 +75,10 @@ class SecurityConfig {
                     ApiErrorResponse(
                         HttpStatus.FORBIDDEN,
                         "Access denied",
-                        arrayListOf("You dont have enough permissions to use this functionality")))
-                    .toString())
+                        arrayListOf("You dont have enough permissions to use this functionality",
+                            "Please LogIn and try again")
+                    )
+                ).toString())
         }
         return http.build()
     }

@@ -13,7 +13,7 @@ import java.util.Date
 @Service
 class JwtService {
     companion object{
-        const val SECRET_KEY: String = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970Ñ"
+        private const val SECRET_KEY: String = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970Ñ"
     }
 
     fun extractUsername(token: String): String = extractClaim(token) {it.subject}

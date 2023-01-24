@@ -10,10 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails
 open class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     open var id: Long?,
 
-    @Column(name = "social_security_number", unique = true, nullable = false)
+    @Column(name = "social_security_number", nullable = false) //unique = true
     open var socialSecurityNumber: Int?,
 
     @Column(nullable = false)
@@ -22,10 +21,10 @@ open class User(
     @Column(nullable = false)
     open var surname: String?,
 
-    @Column(name = "phone_number", unique = true, nullable = false)
+    @Column(name = "phone_number",  nullable = false) //unique = true,)
     open var phone: Int? = null,
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false) //unique = true
     @Email
     open var email: String?,
 

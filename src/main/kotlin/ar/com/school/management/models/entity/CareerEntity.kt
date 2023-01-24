@@ -14,7 +14,7 @@ class CareerEntity(
     @Column(name = "career_id")
     var id: Long?,
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     var name: String,
 
     var description: String?,
