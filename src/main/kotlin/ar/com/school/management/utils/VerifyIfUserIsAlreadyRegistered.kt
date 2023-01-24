@@ -1,6 +1,6 @@
 package ar.com.school.management.utils
 
-import ar.com.school.management.exception.UserRegisteredException
+import ar.com.school.management.exception.AlreadyRegisteredException
 import ar.com.school.management.models.request.UserRequest
 import ar.com.school.management.repository.ManagerRepository
 import ar.com.school.management.repository.StudentRepository
@@ -25,28 +25,28 @@ class VerifyIfUserIsAlreadyRegistered {
 
     private fun verifyEmail(email: String) {
         managerRepository.findByEmail(email)
-            .ifPresent { throw UserRegisteredException("The email is already in use") }
+            .ifPresent { throw AlreadyRegisteredException("The email is already in use") }
         studentRepository.findByEmail(email)
-            .ifPresent { throw UserRegisteredException("The email is already in use") }
+            .ifPresent { throw AlreadyRegisteredException("The email is already in use") }
         teacherRepository.findByEmail(email)
-            .ifPresent { throw UserRegisteredException("The email is already in use") }
+            .ifPresent { throw AlreadyRegisteredException("The email is already in use") }
     }
 
     private fun verifyPhone(phone: Int) {
         managerRepository.findByPhone(phone)
-            .ifPresent { throw UserRegisteredException("The phone is already in use") }
+            .ifPresent { throw AlreadyRegisteredException("The phone is already in use") }
         studentRepository.findByPhone(phone)
-            .ifPresent { throw UserRegisteredException("The phone is already in use") }
+            .ifPresent { throw AlreadyRegisteredException("The phone is already in use") }
         teacherRepository.findByPhone(phone)
-            .ifPresent { throw UserRegisteredException("The phone is already in use") }
+            .ifPresent { throw AlreadyRegisteredException("The phone is already in use") }
     }
 
     private fun verifySsn(socialSecurityNumber: Int) {
         managerRepository.findBySocialSecurityNumber(socialSecurityNumber)
-            .ifPresent { throw UserRegisteredException("The user is already registered") }
+            .ifPresent { throw AlreadyRegisteredException("The user is already registered") }
         studentRepository.findBySocialSecurityNumber(socialSecurityNumber)
-            .ifPresent { throw UserRegisteredException("The user is already registered") }
+            .ifPresent { throw AlreadyRegisteredException("The user is already registered") }
         teacherRepository.findBySocialSecurityNumber(socialSecurityNumber)
-            .ifPresent { throw UserRegisteredException("The user is already registered") }
+            .ifPresent { throw AlreadyRegisteredException("The user is already registered") }
     }
 }
