@@ -2,10 +2,7 @@ package ar.com.school.management.controller
 
 import ar.com.school.management.models.request.AuthenticationRequest
 import ar.com.school.management.models.request.UserRequest
-import ar.com.school.management.models.response.ApiErrorResponse
-import ar.com.school.management.models.response.AuthenticationResponse
-import ar.com.school.management.models.response.StudentResponse
-import ar.com.school.management.models.response.TeacherResponse
+import ar.com.school.management.models.response.*
 import ar.com.school.management.service.TeacherService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -117,4 +114,22 @@ class TeacherController {
     fun authenticate(@RequestBody authenticate: AuthenticationRequest): ResponseEntity<AuthenticationResponse> =
         ResponseEntity.ok(teacherService.authenticate(authenticate))
 
+    @Operation(
+        summary = "Set a mark",
+        description = "This feature lets teachers add the mark of a subject to a student"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Mark added successfully!"),
+            ApiResponse(responseCode = "404", description = "The SSN does not belong to any student!",
+                content = [(Content(schema = Schema(implementation = ApiErrorResponse::class)))])
+        ]
+    )
+    @PostMapping("/setMark")
+    @Transactional
+    fun establishStudentMarkInSubject(@RequestParam careerId: Long,
+                                      @RequestParam subjectId: Long,
+                                      @RequestParam studentSsn: Int,
+                                      @RequestParam mark: String): ResponseEntity<StudentSubjectResponse> =
+        ResponseEntity.ok(teacherService.addMark2StudentInSubject(careerId, subjectId, studentSsn, mark))
 }
